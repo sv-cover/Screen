@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobileoptimized" content="0">
+        <title><?php if (!empty($title)):?><?= $title ?> &mdash; <?php endif ?> Cover</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="//cdl.svcover.nl/dist/v0.1/css/cdl.css" type="text/css">
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-cover">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button class="navbar-toggle collapsed navicon-button" href="#navbar-main-collapse" data-toggle="collapse" aria-expanded="false" aria-controls="navbar-main-collapse">
+                        <span class="navicon navicon-white"></span>
+                    </button>
+                    <a class="navbar-logo" href="//www.svcover.nl/"><img src="//cdl.svcover.nl/dist/v0.1/img/cover.png" alt="Cover"></a>
+                    <a class="navbar-brand" href="/">Screen</a>
+                </div>
+                <!-- Toggleable content -->
+                <div class="collapse navbar-collapse" id="navbar-main-collapse">
+                    <ul class="navbar-right">
+                        <!-- Dropdown menu -->
+                        <?php if(!cover_session_logged_in()): ?>
+                            <li><a href="<?= cover_login_url() ?>">Log in</a></li>
+                        <?php else: ?>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">Logged in as <?= $this->html(get_cover_session()->voornaam) ?></li>
+                                    <li><a href="<?= cover_logout_url() ?>">Logout</a></li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <?= $content ?>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

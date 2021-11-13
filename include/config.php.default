@@ -1,0 +1,9 @@
+<?php
+define('ADMIN_COMMITTEE', 'committee');
+define('ADMIN_EMAIL', 'Committee Cover <committee@svcover.nl>');
+
+define('SERVER_NAME', 'https://committee.svcover.nl');
+define('COVER_APP', 'Committee');
+define('COVER_SECRET', '');
+
+// define('SENTRY_URL', ''); // Optional, make sure sentry is installed if you use this.

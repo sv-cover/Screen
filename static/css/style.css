@@ -1,0 +1,30 @@
+header.page-header {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header.page-header h1 {
+    margin-top: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.modal.static {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 1;
+    display: block;
+}
+
+.table .list-inline {
+    margin-bottom: 0;
+}
+
