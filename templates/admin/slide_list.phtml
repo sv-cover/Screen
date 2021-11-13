@@ -1,0 +1,29 @@
+<?php $this->extends('../layout.phtml') ?>
+
+<?php $this->begin('content') ?>
+<div class="container-narrow">
+    <header class="page-header">
+        <h1>Slide</h1>
+    </header>
+
+
+    <ul>
+        <?php foreach ($objects as $slide): ?>
+            <li>
+                <?= $this->html($slide['name'])?>
+                <a href="?view=update&id=<?= $slide['id'] ?>">
+                    Edit
+                </a>
+                <a href="?view=delete&id=<?= $slide['id'] ?>">
+                    Delete
+                </a>
+            </li>
+        <?php endforeach ?>
+        <li>
+            <a href="?view=create">
+                Add slide
+            </a>
+        </li>
+    </ul>
+</div>
+<?php $this->end() ?>
