@@ -18,7 +18,19 @@ class Slide extends Model
 
     public function get_next_order() {
         $query = "SELECT MAX(`order`) AS `order` FROM `$this->table`;";
-
         return ($this->query_first($query)['order'] ?? -1) + 1;
+    }
+
+    public function get_active_slides() {
+        $query = "
+            SELECT *
+              FROM `$this->table` s
+             WHERE 1=1
+               AND s.is_active
+               AND s.start < NOW()
+               AND (s.end IS NULL OR s.end > NOW())
+             ORDER BY s.order, s.id;
+        ";
+        return $this->query($query);
     }
 }

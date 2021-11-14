@@ -1,8 +1,35 @@
-<?php $this->extends('layout.phtml') ?>
-
-<?php $this->begin('content') ?>
-<div class="container">
-    <h1>Title</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni provident numquam adipisci quasi ad facilis doloribus repellat facere deleniti odit aperiam inventore culpa voluptate, qui quae consectetur laboriosam eveniet repudiandae praesentium, id placeat dolor iure iusto. Impedit, doloribus! Accusamus sit, aperiam possimus impedit itaque vitae blanditiis placeat officiis cumque facere.</p>
-</div>
-<?php $this->end() ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cover Screen</title>
+    <link rel="stylesheet" href="/static/css/screen.css">
+</head>
+<body>
+    <div class="screen">
+        <div class="slides"></div>
+        <progress class="iteration-progress"></progress>
+        <template data-error-template>
+            <div class="slide">
+                Something went wrong!
+            </div>
+        </template>
+        <template data-image-slide-template>
+            <figure class="slide">
+                <img>
+            </figure>
+        </template>
+        <template data-web-slide-template>
+            <div class="slide">
+                <iframe
+                    frameborder="0"
+                    referrerpolicy="no-referrer"
+                    sandbox="allow-scripts"
+                ></iframe>
+            </div>
+        </template>
+    </div>
+    <script src="/static/js/screen.js"></script>
+</body>
+</html>
