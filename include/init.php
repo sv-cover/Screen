@@ -5,6 +5,7 @@ require_once 'include/sessions.php';
 require_once 'include/sentry.php';
 require_once 'include/form.php';
 require_once 'include/TemplateView.class.php';
+require_once 'include/APIView.class.php';
 require_once 'include/FormView.class.php';
 require_once 'include/ModelView.class.php';
 
