@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
+
+:root {
+	--font-family: 'Fira Sans', sans-serif;
+	--background: #eee;
+	--foreground: #333;
+	--accent: #c8102e;
+	--grid-opacity: .4;
+	--raingraph-gradient-opacity: .2;
+}
+
+* {
+	box-sizing:border-box;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	background: var(--background);
+	font-family: var(--font-family);
+	font-weight: 400;
+	color: var(--foreground);
+	overflow: hidden; /*Hide randomly appearing scrollbars*/
+	text-align: center;
+}
+
+body.night {
+	--background: linear-gradient(0deg, #203b62 0%, #041125 100%);
+	--foreground: #fff;
+}
+
+body.day {
+	--background: linear-gradient(0deg, #eee 0%, #e2eeff 100%);
+	--foreground: #222;
+}
+
+svg {
+	shape-rendering: geometricPrecision;
+	text-rendering: geometricPrecision;
+}
+
+.error {
+	font-size: 2em;
+}
+
+.weather-slide {
+	height: 100%;
+	width: 100%;
+	font-size: 17vmin;
+	display: flex;
+	flex-direction: row;
+}
+
+.main {
+	display: flex;
+	flex: 1 1 70%;
+	align-items: center;
+	justify-content: center;
+}
+
+.main > svg {
+	width: 5em;
+	max-width: 45vw;
+	max-height: 80vh;
+	fill: var(--foreground);
+	fill-rule: nonzero;
+}
+
+.sidebar {
+	flex: 1 0 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding: 0 .25em;
+}
+
+.temperature p {
+	margin: 0;
+}
+
+.temperature .feel {
+	margin-top: -.75em;
+	font-size: 0.22em;
+}
+
+.wind svg.icon {
+	display: inline;
+	height: 1.1em;
+	width: 1.1em;
+	vertical-align: middle;
+	position: relative;
+	top: -.09em;  /* looks centered */
+}
+
+.wind svg.icon polygon {
+	fill: var(--foreground);
+}
+
+.rain svg.rain-graph {
+	width: 2.2em;
+}
+
+.rain svg.rain-graph #rain-graph-fill-gradient .stop-1 {
+	stop-color: var(--foreground);
+	stop-opacity: var(--raingraph-gradient-opacity);
+}
+
+.rain svg.rain-graph #rain-graph-fill-gradient .stop-2 {
+	stop-color: var(--foreground);
+	stop-opacity: 0;
+}
+
+.rain svg.rain-graph .graph {
+	stroke: var(--foreground);
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.rain svg.rain-graph .graph-fill {
+	fill: url('#rain-graph-fill-gradient');
+}
+
+.rain svg.rain-graph .now,
+.rain svg.rain-graph .grid{
+	stroke: var(--foreground);
+	stroke-linecap: round;
+}
+
+.rain svg.rain-graph .grid{
+	stroke-opacity: var(--grid-opacity);
+}
+
+.rain svg.rain-graph .now {
+	stroke: var(--accent);
+}
+
+.rain svg.rain-graph .grid-thin {
+	stroke-width: 4px;
+}
+
+.rain svg.rain-graph .label {
+	fill: var(--foreground);
+	font-weight: normal;
+	font-family: var(--font-family);
+	stroke-width: 0;
+}
+
+.credits{
+	position: absolute;
+	bottom: .65em;
+	left: 1em;
+	font-size: .1em;
+}
+
+
+@media (max-aspect-ratio: 1/1) {
+	.weather-slide {
+		font-size: 14vmin;
+		flex-direction: column;
+	}
+
+	.main {
+		flex: 0 1 30%;
+	}
+
+	.main > svg {
+		max-width: 80vw;
+		max-height: 30vh;
+	}
+
+	.sidebar {
+		flex: 1 0 70%;
+	}
+}
