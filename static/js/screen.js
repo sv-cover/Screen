@@ -1,4 +1,4 @@
-window.DEFAULT_DURATION = 5;
+window.DEFAULT_DURATION = 20;
 
 class Slide {
     static _template;
