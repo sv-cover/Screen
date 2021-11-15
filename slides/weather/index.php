@@ -116,7 +116,7 @@ function get_time_class($data) {
 function get_icon($data) {
     // Get icon, default to unknown.svg
     $icon = 'img/unknown.svg';
-    if (preg_match('/\/([a-z]?).png$/', $data->iconurl, $matches))
+    if (preg_match('/\/([a-z]{1,2}).png$/', $data->iconurl, $matches))
         $icon = 'img/'.$matches[1].'.svg';
     if(!is_file($icon))
         $icon = 'img/unknown.svg';
