@@ -5,9 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cover Screen</title>
     <link rel="stylesheet" href="/static/css/screen.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" type="text/css">
 </head>
 <body>
+    <noscript>
+        Sorry, this page won't work without javascript.
+    </noscript>
     <div class="screen">
+        <ul class="controls" hidden>
+            <li>
+                <button data-play-button hidden aria-label="Play/resume" title="Play/resume">
+                    <i class="fas fa-play" aria-hidden="true"></i>
+                </button>
+                <button data-pause-button hidden aria-label="Pause" title="Pause">
+                    <i class="fas fa-pause" aria-hidden="true"></i>
+                </button>
+            </li>
+            <li>
+                <button data-next-button hidden aria-label="Next slide" title="Next slide">
+                    <i class="fas fa-step-forward" aria-hidden="true"></i>
+                </button>
+            </li>
+            <li>
+                <button data-exit-fullscreen-button hidden aria-label="Exit fullscreen" title="Exit fullscreen">
+                    <i class="fas fa-compress" aria-hidden="true"></i>
+                </button>
+                <button data-enter-fullscreen-button hidden aria-label="Enter fullscreen" title="Enter fullscreen">
+                    <i class="fas fa-expand" aria-hidden="true"></i>
+                </button>
+            </li>
+            <?php if (cover_session_logged_in() && cover_session_in_committee(ADMIN_COMMITTEE)): ?>
+                <li>
+                    <a href="/admin" aria-label="Admin" title="Admin">
+                        <i class="fas fa-cog" aria-hidden="true"></i>
+                    </a>
+                </li>
+            <?php endif ?>
+            <li>
+                <button data-controls-button hidden aria-label="Hide controls" title="Hide controls">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </li>
+        </ul>
         <div class="slides"></div>
         <progress class="iteration-progress"></progress>
         <template data-error-template>

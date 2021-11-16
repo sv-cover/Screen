@@ -1,14 +1,18 @@
 :root {
     --cover-red: #c8102e;
+    --cover-red-dark: #7f081f;
     --black: #000;
     --white: #fff;
+}
+
+* {
+    box-sizing:border-box;
 }
 
 html, body {
     margin: 0;
     overflow: hidden;
     font: 24px/32px sans-serif;
-    cursor: none;
     width: 100%;
     height: 100%;
 }
@@ -48,38 +52,152 @@ progress::-ms-fill {
     border: none
 }
 
-.screen,
-.screen .slide,
+
+/*******************************************************************************
+ * Screen container
+ ******************************************************************************/
+
+.screen {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.screen:not(.has-cursor) {
+    cursor: none;
+}
+
+
+/*******************************************************************************
+ * Slideshow 
+ ******************************************************************************/
+
+.screen .slides {
+    flex: 1 1 100%;
+    position: relative;
+}
+
+
+/*******************************************************************************
+ * Slide
+ ******************************************************************************/
+
+.screen .slide {
+    --background-color: var(--white);
+    --object-fit: cover;
+    /* absolute positioning to make sure slide take up no more space than allocated */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    z-index: 9;
+}
+
+/* cursor cloak, makes sure cursor is hiddden in iframe slides */
+.screen .slide::after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
 .screen .slide iframe,
 .screen .slide img {
     width: 100%;
     height: 100%;
 }
 
-.screen {
-    display: flex;
-    flex-direction: column;
-}
-
-.screen .slides {
-    flex: 1 1 100%;
-}
-
-.screen .slide{
-    --background-color: var(--white);
-    --object-fit: cover;
-    background-color: var(--background-color);
-}
-
 .screen .slide img {
     object-fit: var(--object-fit);
 }
 
+
+/*******************************************************************************
+ * Progress bar
+ ******************************************************************************/
+
 .screen .iteration-progress {
     width: 100%;
     flex: 0 0 1.5vh;
+    max-height: 1.5vh; /* Somehow still grows if not max-height is not set */
 }
 
 .screen .iteration-progress:not([hidden]) {
-    display: block;
+    /*display: block;*/
+}
+
+
+/*******************************************************************************
+ * Controls
+ ******************************************************************************/
+
+.screen ul.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    background: var(--cover-red);
+    box-shadow: 0 0 .5em rgba(0,0,0,.5);
+    list-style: none;
+    z-index: 20; /* Controls should be above everything else */
+}
+
+.screen ul.controls > li {
+    display: inline-block;
+}
+
+/* Reset button for things we won't override */
+.screen .controls button {
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+    -webkit-font-smoothing: inherit;
+    font: inherit;
+    border-radius: 0;
+    border: none;
+    overflow: visible;
+    width: auto;
+}
+
+.screen .controls button:focus:not(:focus-visible),
+.screen .controls button:focus:not(:-moz-focusring) {
+    outline: none;
+}
+
+/* Style buttons and anchors */
+.screen .controls a,
+.screen .controls button {
+    background: var(--cover-red);
+    color: white;
+    font-size: .8em;
+    line-height: 1em;
+    margin: 0;
+    padding: .8em 1em;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.screen .controls a:not([hidden]),
+.screen .controls button:not([hidden]) {
+    display: inline-block;
+}
+
+.screen .controls a:hover,
+.screen .controls a:focus,
+.screen .controls button:hover,
+.screen .controls button:focus {
+    background-color: var(--cover-red-dark);
+    outline: 0;
 }

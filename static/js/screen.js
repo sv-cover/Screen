@@ -1,4 +1,6 @@
 window.DEFAULT_DURATION = 20;
+window.CONTROLS_TIMEOUT = 60;
+
 
 class Slide {
     static _template;
@@ -8,7 +10,7 @@ class Slide {
         this.progress = progress;
     }
 
-    get_template() {
+    getTemplate() {
         if (!this.constructor._template)
             this.constructor._template = document.querySelector(this.constructor.templateSelector);
         return this.constructor._template.content.firstElementChild.cloneNode(true);
@@ -25,21 +27,23 @@ class Slide {
     }
 }
 
+
 class ErrorSlide extends Slide {
     static templateSelector = '[data-error-template]';
 
     render() {
-        const element = this.get_template();
+        const element = this.getTemplate();
         element.append(this.data.message || 'Unknown error');
         return element;
     }
 }
 
+
 class ImageSlide extends Slide {
     static templateSelector = '[data-image-slide-template]';
 
     render() {
-        const element = this.get_template();
+        const element = this.getTemplate();
 
         element.style.setProperty('--background-color', this.data.background_color);
         element.style.setProperty('--object-fit', this.data.fit);
@@ -50,11 +54,12 @@ class ImageSlide extends Slide {
     }
 }
 
+
 class WebSlide extends Slide {
     static templateSelector = '[data-web-slide-template]';
 
     render() {
-        const element = this.get_template();
+        const element = this.getTemplate();
 
         element.style.setProperty('--background-color', this.data.background_color);
 
@@ -64,11 +69,13 @@ class WebSlide extends Slide {
     }
 }
 
+
 class Screen {
     constructor() {
-        this.containerElement = document.querySelector('.slides');
-        this.progressElement = document.querySelector('.iteration-progress');
-        document.addEventListener('keydown', this.handleKeydown.bind(this));
+        this.element = document.querySelector('.screen');
+        this.containerElement = this.element.querySelector('.slides');
+        this.progressElement = this.element.querySelector('.iteration-progress');
+        this.controller = new ScreenController(this);
     }
 
     async *slideGenerator() {
@@ -139,7 +146,8 @@ class Screen {
         this.progressElement.max = Math.max(this.next.progress.total - 1, 0);
         this.progressElement.value = this.next.progress.idx;
 
-        this.nextSlideTimout = setTimeout(this.nextSlide.bind(this), this.next.duration * 1000);
+        if (this.autoPlay)
+            this.nextSlideTimout = setTimeout(this.nextSlide.bind(this), this.next.duration * 1000);
 
         this.current = this.next;
         this.next = await this.loadSlide();
@@ -161,8 +169,106 @@ class Screen {
     }
 
     async run() {
+        this.autoPlay = true;
         this.slides = this.slideGenerator();
         this.nextSlide();
+    }
+
+    pause() {
+        if (this.nextSlideTimout)
+            clearTimeout(this.nextSlideTimout);
+        this.autoPlay = false;
+    }
+
+    resume() {
+        this.autoPlay = true;
+        this.nextSlide();
+    }
+}
+
+
+class ScreenController {
+    constructor(screen) {
+        this.screen = screen;
+        this.controlsElement = screen.element.querySelector('.controls');
+        this.initControls(this.controlsElement);
+        document.addEventListener('keydown', this.handleKeydown.bind(this));
+        document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
+        document.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        document.addEventListener('click', this.handleClick.bind(this));
+    }
+
+    initControls(el) {
+        this.playButton = el.querySelector('[data-play-button]');
+        this.playButton.addEventListener('click', this.handlePlay.bind(this));
+        this.playButton.hidden = true;
+
+        this.pauseButton = el.querySelector('[data-pause-button]');
+        this.pauseButton.addEventListener('click', this.handlePause.bind(this));
+        this.pauseButton.hidden = false;
+
+        this.nextButton = el.querySelector('[data-next-button]');
+        this.nextButton.addEventListener('click', this.handleNext.bind(this));
+        this.nextButton.hidden = false;
+
+        this.enterFullscreenButton = el.querySelector('[data-enter-fullscreen-button]');
+        this.enterFullscreenButton.addEventListener('click', this.handleEnterFullscreen.bind(this));
+        this.enterFullscreenButton.hidden = false;
+
+        this.exitFullscreenButton = el.querySelector('[data-exit-fullscreen-button]');
+        this.exitFullscreenButton.addEventListener('click', this.handleExitFullscreen.bind(this));
+        this.exitFullscreenButton.hidden = true;
+
+        this.controlsButton = el.querySelector('[data-controls-button]');
+        this.controlsButton.addEventListener('click', this.hideControls.bind(this));
+        this.controlsButton.hidden = false;
+
+        this.showControls();
+    }
+
+    handleNext(event) {
+        this.screen.nextSlide();
+    }
+
+    handlePlay(event) {
+        this.screen.resume();
+        this.playButton.hidden = true;
+        this.pauseButton.hidden = false;
+    }
+
+    handlePause(event) {
+        this.screen.pause();
+        this.pauseButton.hidden = true;
+        this.playButton.hidden = false;
+    }
+
+    handleEnterFullscreen(event) {
+        this.screen.element.requestFullscreen();
+    }
+
+    handleExitFullscreen(event) {
+        document.exitFullscreen();
+    }
+
+    handleFullscreenChange(event) {
+        if (document.fullscreenElement) {
+            this.enterFullscreenButton.hidden = true;
+            this.exitFullscreenButton.hidden = false;
+        } else {
+            this.enterFullscreenButton.hidden = false;
+            this.exitFullscreenButton.hidden = true;
+        }
+    }
+
+    handleClick(event) {
+        if (!this.controlsElement.contains(event.target))
+            this.showControls();
+    }
+
+    handleMouseMove(event) {
+        // Only show after substantial movement
+        if (Math.abs(event.movementX) + Math.abs(event.movementY) > 100)
+            this.showControls();
     }
 
     handleKeydown(event) {
@@ -171,12 +277,49 @@ class Screen {
             return;
 
         switch (event.key) {
-            case "Right": // IE/Edge specific value
-            case "ArrowRight":
-                this.nextSlide();
+            case ' ':
+            case 'k':
+            case 'K':
+                this.togglePlay(event);
+                break;
+            case 'f':
+            case 'F':
+                this.toggleFullscreen(event);
+                break;
+            case 'Right': // IE/Edge specific value
+            case 'ArrowRight':
+                this.handleNext(event);
                 break;
         }
     }
+
+    hideControls() {
+        this.controlsElement.hidden = true;
+        this.screen.element.classList.remove('has-cursor');
+    }
+
+    showControls() {
+        if (this.controlsTimeout)
+            clearTimeout(this.controlsTimeout);
+        this.controlsElement.hidden = false;
+        this.screen.element.classList.add('has-cursor');
+        this.controlsTimeout = setTimeout(this.hideControls.bind(this), window.CONTROLS_TIMEOUT * 1000);
+    }
+
+    togglePlay(event) {
+        if (this.screen.autoPlay)
+            this.handlePause(event);
+        else
+            this.handlePlay(event);
+    }
+
+    toggleFullscreen(event) {
+        if (document.fullscreenElement)
+            this.handleExitFullscreen(event);
+        else
+            this.handleEnterFullscreen(event);
+    }
 }
 
-(new Screen('.screen')).run();
+
+(new Screen()).run();
