@@ -1,6 +1,7 @@
 window.DEFAULT_DURATION = 20;
 window.CONTROLS_TIMEOUT = 60;
 window.SLIDE_PROBE_INTERVAL = 5*60;
+window.RESTART_TIME = '6:00';
 
 
 class Slide {
@@ -115,7 +116,6 @@ class Screen {
                 );
 
             this.iteration ++;
-            // TODO: periodically reset iteration counter
         } while (true);
     }
 
@@ -196,6 +196,16 @@ class Screen {
 
         // Start slideshow
         this.nextSlide();
+
+        // Schedule periodic restart if not yet scheduled
+        // This restart prevents 
+        if (!this.restartTimeout && !this.restartInterval) {
+            const now = new Date();
+            let firstRestart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...window.RESTART_TIME.split(':')) - now;
+            if (firstRestart < 0)
+                firstRestart += 24*60*60*1000;
+            this.restartTimeout = setTimeout(this.handleRestartInterval.bind(this), firstRestart);
+        }
     }
 
     pause() {
@@ -227,6 +237,14 @@ class Screen {
             if (shouldRestart) 
                 this.run();
         }
+    }
+
+    handleRestartInterval() {
+        // Periodically restart slideshow, to "clean up" (even though it shouldn't be necessary)
+        if (!this.restartInterval)
+            this.restartInterval = setInterval(this.handleRestartInterval.bind(this), 24*60*60*1000);
+        // TODO: Is this soft restart enough? Or would window.location.reload() be better?
+        this.run();
     }
 }
 
