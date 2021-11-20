@@ -140,19 +140,31 @@ progress::-ms-fill {
 
 
 /*******************************************************************************
- * Controls
+ * Controls & Paused indicator
  ******************************************************************************/
 
+.screen .paused-indicator,
 .screen ul.controls {
     position: absolute;
     top: 0;
-    left: 0;
     margin: 0;
     padding: 0;
     background: var(--cover-red);
     box-shadow: 0 0 .5em rgba(0,0,0,.5);
     list-style: none;
     z-index: 20; /* Controls should be above everything else */
+}
+
+.screen ul.controls {
+    left: 0;
+}
+
+.screen .paused-indicator {
+    right: 0;
+    color: white;
+    line-height: 1em;
+    font-size: .8em;
+    padding: .8em 1em;
 }
 
 .screen ul.controls > li {

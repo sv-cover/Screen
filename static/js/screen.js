@@ -1,5 +1,6 @@
 window.DEFAULT_DURATION = 20;
 window.CONTROLS_TIMEOUT = 60;
+window.SLIDE_PROBE_INTERVAL = 5*60;
 
 
 class Slide {
@@ -75,6 +76,7 @@ class Screen {
         this.element = document.querySelector('.screen');
         this.containerElement = this.element.querySelector('.slides');
         this.progressElement = this.element.querySelector('.iteration-progress');
+        this.pausedIndicatorElement = this.element.querySelector('.paused-indicator');
         this.controller = new ScreenController(this);
     }
 
@@ -127,6 +129,8 @@ class Screen {
     async nextSlide() {
         if (this.nextSlideTimout)
             clearTimeout(this.nextSlideTimout);
+        if (this.slideProbeInterval)
+            clearInterval(this.slideProbeInterval);
 
         if (!this.next)
             this.next = await this.loadSlide();
@@ -147,7 +151,15 @@ class Screen {
         this.progressElement.value = this.next.progress.idx;
 
         if (this.autoPlay)
-            this.nextSlideTimout = setTimeout(this.nextSlide.bind(this), this.next.duration * 1000);
+            this.nextSlideTimout = setTimeout(
+                this.nextSlide.bind(this),
+                this.next.duration * 1000
+            );
+
+        this.slideProbeInterval = setInterval(
+            this.handleSlideProbeInterval.bind(this),
+            window.SLIDE_PROBE_INTERVAL * 1000
+        );
 
         this.current = this.next;
         this.next = await this.loadSlide();
@@ -169,8 +181,20 @@ class Screen {
     }
 
     async run() {
+        // Remove all current slides (if any)
+        while (this.containerElement.firstChild)
+            this.containerElement.removeChild(this.containerElement.firstChild);
+
+        // Reset values
+        this.current = null;
+        this.next = null;
         this.autoPlay = true;
+        this.pausedIndicatorElement.hidden = true;
+
+        // Initiate slide generator
         this.slides = this.slideGenerator();
+
+        // Start slideshow
         this.nextSlide();
     }
 
@@ -183,6 +207,26 @@ class Screen {
     resume() {
         this.autoPlay = true;
         this.nextSlide();
+    }
+
+    async handleSlideProbeInterval() {
+        if (!this.autoPlay) {
+            // Show pause indicator just so it's clear why the screen is "stuck" on one slide
+            this.pausedIndicatorElement.hidden = false;
+        } else {
+            /* Restart if 
+             * 1. slide is gone
+             * 2. slide duration changed (use configured duration, rather than calculated duration for current slide)
+             * 3. slide end time changed
+             */
+            const slides = await this.fetchSlides();
+            const slideData = slides.find(s => s.id == this.current.data.id);
+            const shouldRestart = !slideData ||
+                slideData.duration != this.current.data.duration ||
+                slideData.end != this.current.data.end;
+            if (shouldRestart) 
+                this.run();
+        }
     }
 }
 
