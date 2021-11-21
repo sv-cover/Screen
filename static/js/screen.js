@@ -1,6 +1,7 @@
-window.DEFAULT_DURATION = 20;
-window.CONTROLS_TIMEOUT = 60;
+window.DEFAULT_SLIDE_DURATION = 20;
+window.DEFAULT_ERROR_DURATION = 60;
 window.SLIDE_PROBE_INTERVAL = 5*60;
+window.CONTROLS_TIMEOUT = 60;
 window.RESTART_TIME = '6:00';
 
 
@@ -25,7 +26,19 @@ class Slide {
     }
 
     get duration() {
-        return this.data.duration || window.DEFAULT_DURATION;
+        return this.data.duration || window.DEFAULT_SLIDE_DURATION;
+    }
+
+    show() {
+        this.element.hidden = false;
+    }
+
+    hide() {
+        this.element.hidden = true;
+    }
+
+    remove() {
+        this.element.remove();
     }
 }
 
@@ -35,8 +48,50 @@ class ErrorSlide extends Slide {
 
     render() {
         const element = this.getTemplate();
-        element.append(this.data.message || 'Unknown error');
+
+        let titleElement = element.querySelector('[data-error-title]');
+        titleElement.innerText = this.data.title || 'Something went wrong!';
+
+        let messageElement = element.querySelector('[data-error-message]');
+        messageElement.innerText = this.data.message || 'Unknown error. Retrying in a bit…';
+
+        const progressElement = element.querySelector('[data-error-progress]');
+        progressElement.max = this.duration;
+
         return element;
+    }
+
+    get duration() {
+        // Ignore custom slide duration. Don't show error for longer than necessary.
+        if (this.data.errorType === 'slide')
+            return window.DEFAULT_SLIDE_DURATION;
+        return window.DEFAULT_ERROR_DURATION;
+    }
+
+    show() {
+        super.show();
+        if (this.data.showErrorCountdown)
+            this.countdown();
+    }
+
+    countdown() {
+        /* This implementation deviates from the codestyle in the rest of this file, 
+         * but this is less cumbersome. So I like it more this way.
+         */
+        const progressElement = this.element.querySelector('[data-error-progress]');
+        progressElement.max = this.duration;
+        progressElement.hidden = false;
+
+        const to = new Date().getTime() + this.duration * 1000;
+        const handleCountdown = () => {
+            const now = new Date().getTime();
+            const diff = to - now;
+            progressElement.value = Math.floor(diff / 1000);
+            if (diff < 0)
+                clearInterval(interval);
+        };
+        handleCountdown();
+        const interval = setInterval(handleCountdown.bind(this), 1000);
     }
 }
 
@@ -90,10 +145,11 @@ class Screen {
             try {
                 slides = await this.fetchSlides();
             } catch (error) {
-                yield new ErrorSlide(
-                    {message: 'Error while loading slides. Retrying in a bit…'},
-                    {idx: 0, total: 0, iteration: this.iteration}
-                );
+                yield new ErrorSlide({
+                    message: 'Error while loading slides. Retrying in a bit…',
+                    errorType: 'api',
+                    showErrorCountdown: true
+                }, {idx: 0, total: 0, iteration: this.iteration});
                 continue;
             }
 
@@ -103,10 +159,12 @@ class Screen {
 
             // Show error if no slides to render. Don't continue so iteration counter will be increased
             if (slides.length === 0)
-                yield new ErrorSlide(
-                    {message: 'No slides to show. Retrying in a bit…'},
-                    {idx: 0, total: 0, iteration: this.iteration}
-                );
+                yield new ErrorSlide({
+                    title: 'No slides to show!',
+                    message: 'Retrying in a bit…',
+                    errorType: 'api',
+                    showErrorCountdown: true
+                }, {idx: 0, total: 0, iteration: this.iteration});
 
             // Render slides
             for (let idx = 0; idx < slides.length; idx ++)
@@ -135,13 +193,14 @@ class Screen {
         if (!this.next)
             this.next = await this.loadSlide();
 
-        if (this.current)
-            this.current.element.hidden = true;
-
-        this.next.element.hidden = false;
 
         if (this.current)
-            this.current.element.remove();
+            this.current.hide();
+
+        this.next.show();
+
+        if (this.current)
+            this.current.remove();
 
         if (this.next.progress.total > 1)
             this.progressElement.hidden = false;
@@ -170,7 +229,12 @@ class Screen {
             return new ImageSlide(data, progress);
         else if (data.type === 'web')
             return new WebSlide(data, progress);
-        return new ErrorSlide({...data, message: `Unkown slide type: ${data.type}`}, progress);
+        return new ErrorSlide({
+            ...data,
+            message: `Unkown slide type "${data.type}" for slide "${data.name}" (id: ${data.id}).`,
+            errorType: 'slide',
+            showErrorCountdown: false,
+        }, progress);
     }
 
     async loadSlide() {

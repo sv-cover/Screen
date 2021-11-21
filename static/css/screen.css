@@ -1,8 +1,11 @@
 :root {
     --cover-red: #c8102e;
     --cover-red-dark: #7f081f;
+    --cover-light-grey: #dadada;
+    --cover-dark-grey: #666666;
     --black: #000;
     --white: #fff;
+    --grey: #999;
 }
 
 * {
@@ -33,22 +36,18 @@ progress {
 
 progress::-webkit-progress-bar {
     background-color: var(--progress-background);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,1);
 }
 
 progress::-webkit-progress-value {
     background-color: var(--progress-foreground);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,1);
 }
 
 progress::-moz-progress-bar {
     background-color: var(--progress-foreground);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,1);
 }
 
 progress::-ms-fill {
     background-color: var(--progress-foreground);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,1);
     border: none
 }
 
@@ -125,6 +124,26 @@ progress::-ms-fill {
 
 
 /*******************************************************************************
+ * Error slide
+ ******************************************************************************/
+
+.screen .slide.error {
+    background: var(--cover-light-grey);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.screen .slide.error:not([hidden]) {
+    display: flex;
+}
+
+.screen .slide.error progress {
+    --progress-foreground: var(--black);
+    --progress-background: var(--grey);
+}
+
+/*******************************************************************************
  * Progress bar
  ******************************************************************************/
 
@@ -135,7 +154,7 @@ progress::-ms-fill {
 }
 
 .screen .iteration-progress:not([hidden]) {
-    /*display: block;*/
+    display: block;
 }
 
 

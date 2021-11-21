@@ -51,8 +51,12 @@
         <div class="slides"></div>
         <progress class="iteration-progress"></progress>
         <template data-error-template>
-            <div class="slide">
-                Something went wrong!
+            <div class="slide error">
+                <div class="content">
+                    <h2 data-error-title></h2>
+                    <p data-error-message></p>
+                    <progress data-error-progress hidden></progress>
+                </div>
             </div>
         </template>
         <template data-image-slide-template>
