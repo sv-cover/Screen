@@ -3,6 +3,7 @@ window.DEFAULT_ERROR_DURATION = 60;
 window.SLIDE_PROBE_INTERVAL = 5*60;
 window.CONTROLS_TIMEOUT = 60;
 window.RESTART_TIME = '6:00';
+window.ITERATION_PARAM_NAME = 'cover-screen-iteration';
 
 
 class Slide {
@@ -27,6 +28,19 @@ class Slide {
 
     get duration() {
         return this.data.duration || window.DEFAULT_SLIDE_DURATION;
+    }
+
+    get url() {
+        const url = new URL(this.data.url);
+        let searchParams = url.searchParams;
+
+        // Set iteration, compensated for frequency to prevent (non-visual) moiré patterns
+        searchParams.set(
+            window.ITERATION_PARAM_NAME,
+            Math.floor(this.progress.iteration / this.data.frequency)
+        );
+        url.search = searchParams.toString();
+        return url;
     }
 
     show() {
@@ -106,7 +120,7 @@ class ImageSlide extends Slide {
         element.style.setProperty('--object-fit', this.data.fit);
 
         let imgElement = element.querySelector('img');
-        imgElement.src = this.data.url;
+        imgElement.src = this.url;
         return element;
     }
 }
@@ -121,7 +135,7 @@ class WebSlide extends Slide {
         element.style.setProperty('--background-color', this.data.background_color);
 
         let iframeElement = element.querySelector('iframe');
-        iframeElement.src = this.data.url;
+        iframeElement.src = this.url;
         return element;
     }
 }
