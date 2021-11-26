@@ -23,6 +23,24 @@ $(document).on('click', 'a[data-popup]', function(e) {
             });
             break;
 
+        case 'slide-preview':
+            $placeholder.addClass('iframe-modal');
+            $placeholder.html(`
+                <div class="modal-dialog">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+                <figure class="slide-preview">
+                    <iframe
+                        frameborder="0"
+                        referrerpolicy="no-referrer"
+                        sandbox="allow-scripts"
+                        src="${$link.prop('href')}"
+                    ></iframe>
+                </figure>
+                </div>
+            `);
+            $placeholder.modal('show');
+            break;
+
         default:
             throw Error("Unknown type '" + $link.data('popup') + "'");
     }

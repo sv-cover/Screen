@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cover Screen</title>
+    <link rel="stylesheet" href="/static/css/screen.css">
+</head>
+<body>
+    <div class="screen has-cursor">
+        <div class="slides">
+            <figure class="slide" style="--background-color: <?= $object['background_color'] ?>; --object-fit: <?= $object['fit'] ?>;">
+                <img src="<?= $object['url'] ?>">
+            </figure>
+        </div>
+    </div>
+</body>
+</html>

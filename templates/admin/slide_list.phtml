@@ -65,8 +65,9 @@
                     <?php if (!empty($slide['start'])): ?>
                         <?= (new DateTime($slide['start']))->format('Y-m-d H:i') ?>
                         <?php if (new DateTime($slide['start']) > new DateTime()): ?>
+                            <!-- This is suboptimal UX element, but the best way I can think of. -->
                             <span title="Start date in the future, slide hidden regardless of visibility setting">
-                                <i class="fas fa-eye-slash fa-fw text-muted" aria-hidden="true"></i>
+                                <i class="fas fa-exclamation-circle fa-fw text-muted" aria-hidden="true"></i>
                                 <span class="sr-only">Start date in the future, slide hidden regardless of visibility setting</span>
                             </span>
                         <?php endif ?>
@@ -76,8 +77,9 @@
                     <?php if (!empty($slide['end'])): ?>
                         <?= (new DateTime($slide['end']))->format('Y-m-d H:i') ?>
                         <?php if (new DateTime($slide['end']) < new DateTime()): ?>
+                            <!-- This is suboptimal UX element, but the best way I can think of. -->
                             <span title="End date in the past, slide hidden regardless of visibility setting">
-                                <i class="fas fa-eye-slash fa-fw text-muted" aria-hidden="true"></i>
+                                <i class="fas fa-exclamation-circle fa-fw text-muted" aria-hidden="true"></i>
                                 <span class="sr-only">End date in the past, slide hidden regardless of visibility setting</span>
                             </span>
                         <?php endif ?>
@@ -86,15 +88,21 @@
                 <td class="text-right">
                     <ul class="list-inline">
                         <li>
-                            <a href="?view=update&amp;id=<?= $this->attr($slide['id']) ?>">
-                                <i class="fas fa-pen fa-fw" aria-hidden="true"></i>
-                                <span class="sr-only">Edit</span>
+                            <a href="?view=preview&amp;id=<?= $this->attr($slide['id']) ?>" data-popup="slide-preview" title="Preview slide">
+                                <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+                                <span class="sr-only">Preview slide</span>
                             </a>
                         </li>
                         <li>
-                            <a href="?view=delete&amp;id=<?= $this->attr($slide['id']) ?>" data-popup="modal">
+                            <a href="?view=update&amp;id=<?= $this->attr($slide['id']) ?>" title="Edit slide">
+                                <i class="fas fa-pen fa-fw" aria-hidden="true"></i>
+                                <span class="sr-only">Edit slide</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="?view=delete&amp;id=<?= $this->attr($slide['id']) ?>" data-popup="modal" title="Delete slide">
                                 <i class="fas fa-trash fa-fw" aria-hidden="true"></i>
-                                <span class="sr-only">Delete</span>
+                                <span class="sr-only">Delete slide</span>
                             </a>
                         </li>
                         <li>
