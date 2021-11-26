@@ -1,29 +1,122 @@
 <?php $this->extends('../layout.phtml') ?>
 
+<?php $this->begin('scripts') ?>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="/static/js/slides-list.js"></script>
+<?php $this->end() ?>
+
 <?php $this->begin('content') ?>
-<div class="container-narrow">
-    <header class="page-header">
-        <h1>Slide</h1>
-    </header>
+<div class="container">
+<header class="page-header">
+    <h1>Slides</h1>
+    <a href="?view=create" class="btn btn-primary">
+        Add slide
+    </a>
+</header>
 
+<noscript>
+    <div class="alert alert-danger" role="alert">
+        This page contains interactive elements. Please turn on JavaScript to use them!
+    </div>
+</noscript>
 
-    <ul>
+<div class="table-responsive">
+    <table class="table table-hover slide-list-table">
+        <thead>
+            <th></th>
+            <th>Name</th>
+            <th>Duration</th>
+            <th>Frequency</th>
+            <th>Start</th>
+            <th>End</th>
+            <th class="text-right"><span class="sr-only">Controls and</span>Visibility</th>
+        </thead>
+        <tbody data-slide-list-sortable data-slide-order-url="api.php?view=slide_order">
         <?php foreach ($objects as $slide): ?>
-            <li>
-                <?= $this->html($slide['name'])?>
-                <a href="?view=update&id=<?= $slide['id'] ?>">
-                    Edit
-                </a>
-                <a href="?view=delete&id=<?= $slide['id'] ?>">
-                    Delete
-                </a>
-            </li>
+            <tr data-id="<?= $this->attr($slide['id']) ?>">
+                <td class="sortable-handle text-muted" title="Drag me to reorder slides">
+                    <i class="fas fa-arrows-alt" aria-hidden="true"></i>
+                </td>
+
+                <td class="is-truncated">
+                    <span>
+                        <?php if ($slide['type'] == 'web'): ?>
+                            <i class="fas fa-globe fa-fw" aria-hidden="true" title="Web page"></i>
+                            <span class="sr-only">Web page:</span>
+                        <?php elseif ($slide['type'] == 'image'): ?>
+                            <i class="fas fa-image fa-fw" aria-hidden="true" title="Image"></i>
+                            <span class="sr-only">Image:</span>
+                        <?php else: ?>
+                            <i class="far fa-question-circle fa-fw" aria-hidden="true" title="Unknown slide type"></i>
+                            <span class="sr-only">Unknown type:</span>
+                        <?php endif ?>
+                        <span title="<?= $this->attr($slide['name']) ?><?= $slide['description'] ? ': ' : '' ?><?= $this->attr($slide['description']) ?>">
+                            <?= $this->html($slide['name']) ?>
+                        </span>
+                    </span>
+                </td>
+                <td>
+                    <?= $this->html($slide['duration']) ?> seconds
+                </td>
+                <td>
+                    1/<?= $this->html($slide['frequency']) ?>
+                </td>
+                <td>
+                    <?php if (!empty($slide['start'])): ?>
+                        <?= (new DateTime($slide['start']))->format('Y-m-d H:i') ?>
+                        <?php if (new DateTime($slide['start']) > new DateTime()): ?>
+                            <span title="Start date in the future, slide hidden regardless of visibility setting">
+                                <i class="fas fa-eye-slash fa-fw text-muted" aria-hidden="true"></i>
+                                <span class="sr-only">Start date in the future, slide hidden regardless of visibility setting</span>
+                            </span>
+                        <?php endif ?>
+                    <?php endif ?>
+                </td>
+                <td>
+                    <?php if (!empty($slide['end'])): ?>
+                        <?= (new DateTime($slide['end']))->format('Y-m-d H:i') ?>
+                        <?php if (new DateTime($slide['end']) < new DateTime()): ?>
+                            <span title="End date in the past, slide hidden regardless of visibility setting">
+                                <i class="fas fa-eye-slash fa-fw text-muted" aria-hidden="true"></i>
+                                <span class="sr-only">End date in the past, slide hidden regardless of visibility setting</span>
+                            </span>
+                        <?php endif ?>
+                    <?php endif ?>
+                </td>
+                <td class="text-right">
+                    <ul class="list-inline">
+                        <li>
+                            <a href="?view=update&amp;id=<?= $this->attr($slide['id']) ?>">
+                                <i class="fas fa-pen fa-fw" aria-hidden="true"></i>
+                                <span class="sr-only">Edit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="?view=delete&amp;id=<?= $this->attr($slide['id']) ?>" data-popup="modal">
+                                <i class="fas fa-trash fa-fw" aria-hidden="true"></i>
+                                <span class="sr-only">Delete</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="slide-<?= $this->attr($slide['id']) ?>-active-switch"
+                                    <?php if ($slide['is_active']): ?>checked<?php endif ?>
+                                    data-slide-active-switch
+                                    data-slide-update-url="api.php?view=slide_update&amp;id=<?= $this->attr($slide['id']) ?>"
+                                >
+                                <label for="slide-<?= $this->attr($slide['id']) ?>-active-switch">
+                                    <span class="sr-only">Is visible</span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
         <?php endforeach ?>
-        <li>
-            <a href="?view=create">
-                Add slide
-            </a>
-        </li>
-    </ul>
+        </tbody>
+    </table>
+</div>
 </div>
 <?php $this->end() ?>

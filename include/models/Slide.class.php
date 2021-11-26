@@ -21,6 +21,15 @@ class Slide extends Model
         return ($this->query_first($query)['order'] ?? -1) + 1;
     }
 
+    public function get_slides() {
+        $query = "
+            SELECT *
+              FROM `$this->table` s
+             ORDER BY s.order, s.id;
+        ";
+        return $this->query($query);
+    }
+
     public function get_active_slides() {
         $query = "
             SELECT *
@@ -32,5 +41,18 @@ class Slide extends Model
              ORDER BY s.order, s.id;
         ";
         return $this->query($query);
+    }
+
+    public function sanitize_data($data) {
+        // Convert booleans to tinyints
+        $data['is_active'] = empty($data['is_active']) ? 0 : 1;
+
+        // Convert datetime to strings
+        if ($data['start'] instanceof DateTime)
+            $data['start'] = $data['start']->format('Y-m-d H:i');
+        if (!empty($data['end']) && $data['end'] instanceof DateTime)
+            $data['end'] = $data['end']->format('Y-m-d H:i');
+
+        return $data;
     }
 }

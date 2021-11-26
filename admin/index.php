@@ -23,19 +23,21 @@ class AdminView extends ModelView
             return parent::run_page();
     }
 
+    /** Runs the list view */
+    protected function run_list() {
+        return $this->render_template($this->get_template(), ['objects' => $this->get_model()->get_slides()]);
+    }
+
+
     /** Maps a valid form to its database representation */
     protected function process_form_data($data) {
-        // Convert booleans to tinyints
-        $data['is_active'] = empty($data['is_active']) ? 0 : 1;
-
-        // Convert datetime to strings
-        $data['start'] = $data['start']->format('Y-m-d H:i');
-        if (!empty($data['end']))
-            $data['end'] = $data['end']->format('Y-m-d H:i');
-        else
-            $data['end'] = null;
+        // Sanitize
+        $data = $this->get_model()->sanitize_data($data);
 
         // Set null values
+        if (empty($data['end']))
+            $data['end'] = null;
+
         if (empty($data['description']))
             $data['description'] = null;
 
