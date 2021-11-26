@@ -1,9 +1,10 @@
+window.CONTROLS_TIMEOUT = 60;
 window.DEFAULT_SLIDE_DURATION = 20;
 window.DEFAULT_ERROR_DURATION = 60;
-window.SLIDE_PROBE_INTERVAL = 5*60;
-window.CONTROLS_TIMEOUT = 60;
-window.RESTART_TIME = '6:00';
 window.ITERATION_PARAM_NAME = 'cover-screen-iteration';
+window.MIN_SLIDE_DURATION = 1;
+window.RESTART_TIME = '6:00';
+window.SLIDE_PROBE_INTERVAL = 5*60;
 
 
 class Slide {
@@ -27,7 +28,13 @@ class Slide {
     }
 
     get duration() {
-        return this.data.duration || window.DEFAULT_SLIDE_DURATION;
+        let duration = this.data.duration || window.DEFAULT_SLIDE_DURATION;
+        if (this.data.end) {
+            const end = (new Date(this.data.end) - new Date()) / 1000;
+            // Return configured duration, unless end is before that
+            duration = Math.min(duration, Math.round(end));
+        }
+        return Math.max(duration, window.MIN_SLIDE_DURATION);
     }
 
     get url() {
