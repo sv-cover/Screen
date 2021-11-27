@@ -38,9 +38,15 @@ class AdminView extends ModelView
         return $this->render_template($this->get_template(), ['objects' => $this->get_model()->get_slides()]);
     }
 
-
     /** Maps a valid form to its database representation */
     protected function process_form_data($data) {
+        // Create url from filemanager_image_path
+        if (!empty($data['filemanager_image_path']))
+            $data['url'] = sprintf('%s/%s', COVER_FILEMANAGER_URL, $data['filemanager_image_path']);
+
+        if (array_key_exists('filemanager_image_path', $data))
+            unset($data['filemanager_image_path']);
+
         // Sanitize
         $data = $this->get_model()->sanitize_data($data);
 

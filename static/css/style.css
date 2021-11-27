@@ -22,16 +22,6 @@ textarea {
     resize: vertical;
 }
 
-.modal.static {
-    position: relative;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    z-index: 1;
-    display: block;
-}
-
 .table .list-inline {
     margin-bottom: 0;
 }
@@ -156,9 +146,18 @@ textarea {
 
 
 /*******************************************************************************
- * Iframe modal / slide preview modal
+ * Modals
  ******************************************************************************/
 
+.modal.static {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 1;
+    display: block;
+}
 
 .modal.iframe-modal {
     display: flex;
@@ -201,6 +200,16 @@ textarea {
     top: 0;
 }
 
+.modal .filemanager-modal .modal-body {
+    padding: 0;
+}
+
+.modal .filemanager-modal iframe {
+    width: 100%;
+    height: 600px;
+    vertical-align: top;
+}
+
 
 /*******************************************************************************
  * Slide list
@@ -209,4 +218,5 @@ textarea {
 .slide-list-table > tbody > tr > td,
 .slide-list-table > tbody > tr > th {
     line-height: calc(1em * 1.5); /* Switch height */
+    white-space: nowrap;
 }

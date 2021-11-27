@@ -21,20 +21,49 @@
     <?= $form->render_field('description') ?>
     <?= $form->render_field('type') ?>
     <?= $form->render_field('url') ?>
-    <div class="form-group">
-        <?= $form->get_field('background_color')->render_label() ?>
-        <input type="color" id="slide-background_color" class="form-control" name="<?= $form->get_field('background_color')->get_name() ?>" value="<?= $form->get_field('background_color')->value ?>">
-    </div>
-    <?= $form->render_field('fit') ?>
-    <div class="form-group">
-        <?= $form->get_field('duration')->render_label() ?>
+
+    <?php $field = $form->get_field('filemanager_image_path'); ?>
+    <div class="form-group <?= !empty($field->errors) ? 'has-error' : '' ?>" hidden>
+        <?= $field->render_label() ?>
         <div class="input-group">
-            <?= $form->get_field('duration')->render(['class' => 'form-control', 'aria-describedby' => 'duration-unit']) ?>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">
+                    <i class="fas fa-upload fa-fw" aria-hidden="true"></i>
+                    Choose an image…
+                </button>
+            </span>
+            <?= $field->render([
+                'class' => 'form-control',
+                'readonly' => 'readonly',
+                'data-filemanager' => true,
+                'data-filemanager-url' => COVER_FILEMANAGER_URL
+            ]) ?>
+        </div>
+        <?php foreach ($field->errors as $error): ?>
+            <p class="help-block">
+                <?= $this->html($error) ?>
+            </p>
+        <?php endforeach ?>
+    </div>
+
+    <?php $field = $form->get_field('background_color'); ?>
+    <div class="form-group <?= !empty($field->errors) ? 'has-error' : '' ?>">
+        <?= $field->render_label() ?>
+        <input type="color" id="slide-background_color" class="form-control" name="<?= $field->get_name() ?>" value="<?= $field->value ?>">
+    </div>
+
+    <?= $form->render_field('fit') ?>
+    <?php $field = $form->get_field('duration'); ?>
+    <div class="form-group <?= !empty($field->errors) ? 'has-error' : '' ?>">
+        <?= $field->render_label() ?>
+        <div class="input-group">
+            <?= $field->render(['class' => 'form-control', 'aria-describedby' => 'duration-unit']) ?>
             <span class="input-group-addon" id="duration-unit">seconds</span>
         </div>
     </div>
-    <div class="form-group">
-        <?php $field = $form->get_field('frequency'); ?>
+
+    <?php $field = $form->get_field('frequency'); ?>
+    <div class="form-group <?= !empty($field->errors) ? 'has-error' : '' ?>">
         <?php $default_options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 50, 100]; ?>
         <?= $field->render_label() ?>
         <div class="input-group">

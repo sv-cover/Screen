@@ -7,3 +7,6 @@ define('COVER_APP', 'Committee');
 define('COVER_SECRET', '');
 
 // define('SENTRY_URL', ''); // Optional, make sure sentry is installed if you use this.
+
+define('COVER_FILEMANAGER_URL', 'https://filemanager.svcover.nl');
+define('ALLOWED_IMAGE_EXTENSIONS', ['gif', 'jpg', 'jpeg', 'png', 'svg']);
