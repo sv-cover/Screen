@@ -4,8 +4,8 @@ require_once 'include/models/Model.class.php';
 class Slide extends Model
 {
     public static $fit_options = [
-        'cover' => 'Cover',
-        'contain' => 'Contain',
+        'cover' => 'Zoom to fit',
+        'contain' => 'Letterboxed',
     ];
     public static $type_options = [
         'image' => 'Image',

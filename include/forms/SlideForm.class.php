@@ -18,7 +18,7 @@ class SlideForm extends Bootstrap3Form
             'frequency' => new NumberField('Frequency', false),
             'start' => new DateTimeField('Start', false),
             'end' => new DateTimeField('End (optional)', true),
-            'is_active' => new CheckBoxField('Is visible', true),
+            'is_active' => new CheckBoxField('Slide is visible', true),
         ];
 
         parent::__construct($name, $fields);

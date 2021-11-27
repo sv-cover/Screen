@@ -1,10 +1,77 @@
 <?php $this->extends('../layout.phtml') ?>
 
+<?php $this->begin('scripts') ?>
+    <script src="/static/js/slide-form.js"></script>
+<?php $this->end() ?>
+
 <?php $this->begin('content') ?>
 <div class="container-narrow">
-    <header>
-        <h1>Slide</h1>
-    </header>
-    <?= $form->render() ?>
+<header class="page-header">
+    <h1>
+        <?php if ($_GET['view'] === 'create'): ?>
+            Add 
+        <?php elseif ($_GET['view'] === 'update'): ?>
+            Edit
+        <?php endif ?>
+        Slide
+    </h1>
+</header>
+<form id="<?= $form->get_name() ?>" method="POST" data-slide-form>
+    <?= $form->render_field('name') ?>
+    <?= $form->render_field('description') ?>
+    <?= $form->render_field('type') ?>
+    <?= $form->render_field('url') ?>
+    <div class="form-group">
+        <?= $form->get_field('background_color')->render_label() ?>
+        <input type="color" id="slide-background_color" class="form-control" name="<?= $form->get_field('background_color')->get_name() ?>" value="<?= $form->get_field('background_color')->value ?>">
+    </div>
+    <?= $form->render_field('fit') ?>
+    <div class="form-group">
+        <?= $form->get_field('duration')->render_label() ?>
+        <div class="input-group">
+            <?= $form->get_field('duration')->render(['class' => 'form-control', 'aria-describedby' => 'duration-unit']) ?>
+            <span class="input-group-addon" id="duration-unit">seconds</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php $field = $form->get_field('frequency'); ?>
+        <?php $default_options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 50, 100]; ?>
+        <?= $field->render_label() ?>
+        <div class="input-group">
+            <span class="input-group-addon" id="frequency-description">Show this slide</span>
+            <select id="slide-frequency" class="form-control" name="<?= $field->get_name() ?>" aria-describedby="frequency-description">
+                <?php foreach ($default_options as $option): ?>
+                    <option value="<?= $option ?>" <?php if($field->value == $option): ?>selected<?php endif?>>
+                        <?php if ($option == 1): ?>
+                            every iteration
+                        <?php else: ?>
+                            once every <?= $option ?> iterations
+                        <?php endif ?>
+                    </option>
+                <?php endforeach ?>
+                <?php if (!in_array($field->value, $default_options)): ?>
+                    <option value="<?= $this->attr($field->value) ?>" selected>
+                        once every <?= $this->html($field->value) ?> iterations
+                    </option>
+                <?php endif ?>
+            </select>
+        </div>
+    </div>
+    <?= $form->render_field('start') ?>
+    <?= $form->render_field('end') ?>
+    <?= $form->render_field('is_active') ?>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            <?php if ($_GET['view'] === 'create'): ?>
+                Create slide
+            <?php elseif ($_GET['view'] === 'update'): ?>
+                Edit slide
+            <?php else: ?>
+                Submit
+            <?php endif ?>
+        </button>
+        <a class="btn btn-default" href="?view=list">Cancel</a>
+    </div>
+</form>
 </div>
 <?php $this->end() ?>
