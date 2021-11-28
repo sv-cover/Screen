@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');
+
+:root {
+    --font-family: 'Fira Sans', sans-serif;
+    --background: #eee;
+    --foreground: #222;
+    --accent: #c8102e;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: var(--background);
+    font-family: var(--font-family);
+    font-weight: 400;
+    color: var(--foreground);
+    overflow: hidden; /*Hide randomly appearing scrollbars*/
+    text-align: center;
+}
+
+.error {
+    font-size: 2em;
+}
+
+/*
+ * Content styling
+ */
+.busstop-slide {
+    height: 100%;
+    width: 100%;
+    font-size: 4.75vmin;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.busstop-slide h1 {
+    font-size: 1.5em;
+    color: var(--accent);
+    margin: 0 0 .5em 0;
+}
+
+.departure-table {
+    width: 60ch;
+    max-width: 100%;
+    margin: 0;
+}
+
+.departure-table td,
+.departure-table th {
+    padding: .25em 1em;
+    line-height: 1.5em;
+    text-align: left;
+}
+
+
+.departure-table td.line,
+.departure-table th.line {
+    width: 8ch;
+    text-align: center;
+}
+
+.departure-table .cancelled td.destination {
+    text-decoration: line-through;
+}
+
+.departure-table .departure svg {
+    height: 1em; /* has to be smaller than lineheight, in order to not make imminent departures bigger than the rest */
+    vertical-align: middle;
+    fill: var(--foreground);
+}
+
+
+/*
+ * Line colours. Also made bold, to increase legibility
+ */
+
+/* Line 1 */
+.g551 {
+    /*color: #2c7d45; /* Original slide */
+    /*color: #00A24B; /* QBuzz PDF map */
+    color: #00BE46; /* QBuzz website */
+    font-weight: bold;
+}
+
+/* Line 2 */
+.g502 {
+    /*color: #2c7d45; /* Original slide */
+    /*color: #3EBC6D; /* QBuzz PDF map */
+    color: #8CDC32; /* QBuzz website */
+    font-weight: bold;
+}
+
+/* Line 9 */
+.g559 {
+    /*color: #F289B7; /* Original slide */
+    /*color: #FC89C0; /* QBuzz PDF map */
+    color: #FF00FF; /* QBuzz website */
+    font-weight: bold;
+}
+
+/* Line 15 */
+.g565 {
+    /*color: #F37121; /* Original slide */
+    /*color: #FF5F00; /* QBuzz PDF map */
+    color: #FF5F00; /* QBuzz website */
+    font-weight: bold;
+}
+
+/* Line 18 */
+.g518 {
+    /*color: #95CC45; /* QBuzz PDF map */
+    color: #99C200; /* QBuzz website */
+    font-weight: bold;
+}
