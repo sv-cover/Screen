@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/big-text.css">
+    <link rel="stylesheet" href="css/filemanager-field.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32">
     <link rel="shortcut icon" type="image/png" href="img/favicon-64x64.png" sizes="64x64">
@@ -66,10 +67,20 @@
                 <label for="has-image-input">Image</label>
             </p>
             <fieldset aria-label="Image settings" data-toggle="has-image">
-                <p class="field">
+                <!-- <p class="field">
                     <label for="image-url-input">URL</label>
                     <input type="url" name="image-url" id="image-url-input" pattern="https?://.*">
-                </p>
+                </p> -->
+                <div class="field">
+                    <label for="image-url-input">Image</label>
+                    <p class="filemanager-field">
+                        <button type="button">
+                            <svg class="icon" aria-hidden="true"><use href="img/feather-icons.svg#upload"/></svg>
+                            <span>File…</span>
+                        </button>
+                        <input maxlength="2048" readonly="readonly" data-filemanager data-filemanager-url="https://filemanager.svcover.nl" type="text" name="image-url" id="image-url-input">
+                    </p>
+                </div>
                 <p class="field switch is-right">
                     <input
                         type="checkbox"
@@ -731,6 +742,7 @@
         </dialog>
     </section>
 </main>
+<script src="js/filemanager-field.js"></script>
 <script src="js/element-internals-polyfill.js"></script>
 <script src="js/big-text.js"></script>
 </body>

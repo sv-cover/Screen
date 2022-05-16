@@ -56,8 +56,8 @@ function getCharacterAspect(container) {
 
     // Get font metrics
     const style = getComputedStyle(container);
-    const lineHeight = Number(style.getPropertyValue('line-height').match(/\d+/)[0]);
-    const fontSize = Number(style.getPropertyValue('font-size').match(/\d+/)[0]);
+    const lineHeight = Number(style.getPropertyValue('line-height').match(/\d+/)?.[0]);
+    const fontSize = Number(style.getPropertyValue('font-size').match(/\d+/)?.[0]);
     const relativeLineHeight = lineHeight / fontSize;
 
     // Calculate, factor 2 because innerText is 2 chars
@@ -1091,11 +1091,27 @@ new BigText(document, {
                 },
                 resize: true,
             },
+            // 'image-url': {
+            //     default: '',
+            //     render(context, options) {
+            //         if (this.value)
+            //             context.imageElement.src = this.value;
+            //         options['has-image'].render(...arguments);
+            //     },
+            //     resize: true,
+            // },
             'image-url': {
                 default: '',
+                sanitize: (value) => {
+                    if (value) {
+                        let url = new URL(value, 'https://filemanager.svcover.nl/');
+                        return url.pathname + url.search;
+                    }
+                    return '';
+                },
                 render(context, options) {
                     if (this.value)
-                        context.imageElement.src = this.value;
+                        context.imageElement.src = new URL(this.value, 'https://filemanager.svcover.nl/');
                     options['has-image'].render(...arguments);
                 },
                 resize: true,
