@@ -1,0 +1,1592 @@
+@import url('../fonts/fira-sans.css');
+@import url('../fonts/lora.css');
+
+:root {
+    /* Conditionals css hack (see: https://lea.verou.me/2020/10/the-var-space-hack-to-toggle-multiple-values-with-one-custom-property/)*/
+    --ON: initial;
+    --OFF: ;
+
+    /* Fonts */
+    --font-serif: serif;
+    --font-sans-serif: sans-serif;
+    --font-cursive: 'Comic Sans MS', 'Comic Sans', cursive;
+    --font-monospace: monospace;
+    --font-fira-sans: 'Fira Sans', sans-serif;
+    --font-impact: 'Impact', 'Charcoal', sans-serif;
+    --font-arial-black: 'Arial Black', 'Gadget', sans-serif;
+    --font-verdana: 'Verdana', 'Geneva', sans-serif;
+    /*--font-comic-neue: 'Comic Neue', cursive;
+    --font-comic-neue-angular: 'Comic Neue Angular', cursive;
+    --font-cascadia-code: 'Cascadia Code', monospace;*/
+    --font-lora: 'Lora', serif;
+
+    /* Colours */
+    --white: #ffffff;
+    --light-grey: #eeeeee;
+    --grey: #dadada;
+    --dark-grey: #999999;
+
+    --primary: #8080ff;
+    --primary-hsl-val: 240deg 100% 75%;
+    --primary-hsl: hsl(var(--primary-hsl-val));
+    --primary-invert: var(--white);
+    --primary-dark: #4C56CE;
+    --primary-dark-invert: var(--white);
+    --success: #00c19d;
+    --success-invert: var(--white);
+    --danger: #fa5358;
+    --danger-invert: var(--white);
+
+    --link-color: var(--primary-dark);
+
+    /* Spacing */
+    --radius: 4px;
+
+    --gap-small: .5rem;
+    --gap: 1rem;
+    --gap-large: 1.5rem;
+    --local-gap-small: .5em;
+    --local-gap: 1em;
+    --local-gap-large: 1.5em;
+
+    --component-padding-v: .25em;
+    --component-padding-h: .75em;
+    --component-padding: var(--component-padding-v) var(--component-padding-h);
+    --component-padding-v-rem: .25rem;
+    --component-padding-h-rem: .75rem;
+    --component-padding-rem: var(--component-padding-v-rem) var(--component-padding-h-rem);
+
+    /* Timing  */
+    --duration: 75ms;
+    --duration-long: 250ms;
+
+    /* Outlines */
+    --outline: 3px solid hsl(var(--primary-hsl-val) / .75);
+    --outline-invalid: 3px solid var(--danger);
+
+    /* Shadows */
+    --shadow-color: 240deg 8% 43%;
+    --shadow-small: 0.5px 1px 1px  hsl(var(--shadow-color) / 0.333),
+                    1px 2px 2px hsl(var(--shadow-color) / 0.333);
+    --shadow-small-filter: drop-shadow(0.5px 1px 1px  hsl(var(--shadow-color) / 0.333))
+                           drop-shadow(1px 2px 2px hsl(var(--shadow-color) / 0.333));
+    --shadow-medium: 1px 2px 2px hsl(var(--shadow-color) / 0.2),
+                     2px 4px 4px hsl(var(--shadow-color) / 0.2),
+                     3px 6px 6px hsl(var(--shadow-color) / 0.2);
+    --shadow-large: 1px 2px 2px hsl(var(--shadow-color) / 0.1),
+                    2px 4px 4px hsl(var(--shadow-color) / 0.1),
+                    4px 8px 8px hsl(var(--shadow-color) / 0.1),
+                    8px 16px 16px hsl(var(--shadow-color) / 0.1),
+                    16px 32px 32px hsl(var(--shadow-color) / 0.1);
+    --shadow-inset: inset 0.5px 1px 1px  hsl(var(--shadow-color) / 0.5),
+                    inset 1px 2px 2px hsl(var(--shadow-color) / 0.5);
+
+    /* Components */
+    --controls-width: 45ch;
+    --header-height: 2.5rem;
+
+    --layout-picker-icon-size: 3.5em;
+}
+
+/*******************************************************************************
+ * Josh's Custom CSS Reset
+ * https://www.joshwcomeau.com/css/custom-css-reset/
+ ******************************************************************************/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+
+/*******************************************************************************
+ * General styling
+ ******************************************************************************/
+
+body {
+    font-family: sans-serif;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+[disabled] {
+    cursor: not-allowed;
+}
+
+a,
+a:visited {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    /* On this page, different h#'s are only used for accessibility, but
+     * there'll never be a need to differentiate visually. */
+    font-size: 1.2rem;
+} 
+
+:is(p, h1, h2, h3, h4, h5, h6):not(:last-child) {
+    margin-bottom: var(--gap);
+}
+
+noscript {
+    border-radius: var(--radius);
+    border: none;
+    box-shadow: var(--shadow-large);
+    margin: auto;
+    max-width: var(--controls-width);
+    padding: var(--gap);
+}
+
+[contenteditable]:focus {
+    outline: var(--outline);   
+    border-radius: var(--radius);
+}
+
+hr {
+    border: 1px solid var(--grey);
+    margin: var(--gap-large) 0;
+}
+
+svg.icon {
+    display: inline-block;
+    width: 1.25em;
+    height: 1.25em;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    max-width: unset;
+}
+
+main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+/*******************************************************************************
+ * Big Text
+ ******************************************************************************/
+
+
+/* Basic implementation
+ ******************************************************************************/
+
+.big-text {
+    /* Properties assigned to main container */
+    --content-scale-h: 1;
+    --content-scale-v: 1;
+
+    --padding-narrow: 5vmin;
+    --padding-regular: 10vmin;
+    --padding-wide: 15vmin;
+    --padding-ultrawide: 20vmin;
+
+    position: relative;
+    flex: 1 1 100%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.big-text .countdown-wrapper,
+.big-text .text-wrapper {
+    /* Properties assigned to wrapper */
+    --_background-color: var(--background-color, #fff9);
+    --_background-gradient-color: var(--background-gradient-color, #ccc9);
+    --background-gradient-linear: linear-gradient(var(--background-gradient-direction, 0deg), var(--_background-color) 0%, var(--_background-gradient-color) 100%);
+    --background-gradient-radial: radial-gradient(circle, var(--_background-gradient-color) 0%, var(--_background-color) 100%);
+    --background-gradient: var(--background-gradient-linear);
+    --background: var(--_background-color);
+    --background: var(--background-gradient);
+
+    --shadow-regular: var(--shadow-x, 0) var(--shadow-y, 0) var(--shadow-blur, 0) var(--shadow-color, currentColor);
+    --shadow-ugly: calc(var(--shadow-x, 0) * .333) calc(var(--shadow-y, 0) * .333) calc(var(--shadow-blur, 0) * .333) #ffffff,
+                   calc(var(--shadow-x, 0) * .666) calc(var(--shadow-y, 0) * .666) calc(var(--shadow-blur, 0) * .666) #000000,
+                   var(--shadow-x, 0) var(--shadow-y, 0) var(--shadow-blur, 0) var(--shadow-color, red);
+    --shadow-fire: 0 -.01em .04em #ffffff,
+                   0 -.02em .1em #ffff00,
+                   0 -.1em .2em #ff8000,
+                   0 -.18em .4em #ff0000;
+    --shadow-glow: 0 0 calc(var(--shadow-blur, 0) * .07) #ffffff,
+                   0 0 calc(var(--shadow-blur, 0) * .13) #ffffff,
+                   0 0 calc(var(--shadow-blur, 0) * .2) #ffffff,
+                   0 0 calc(var(--shadow-blur, 0) * .27) var(--shadow-color, lime),
+                   0 0 calc(var(--shadow-blur, 0) * .4) var(--shadow-color, lime),
+                   0 0 calc(var(--shadow-blur, 0) * .53) var(--shadow-color, lime),
+                   0 0 calc(var(--shadow-blur, 0) * .73) var(--shadow-color, lime),
+                   0 0 var(--shadow-blur, 0) var(--shadow-color, lime);
+    --shadow-offset: calc(var(--shadow-x, 0) / 2) calc(var(--shadow-y, 0) / 2) 0 var(--background-color, #ffffff),
+                     var(--shadow-x, 0) var(--shadow-y, 0) var(--shadow-blur, 0) var(--shadow-color, currentColor);
+
+    --has-shadow: var(--OFF);
+    --shadow: var(--shadow-regular);
+
+    --has-stroke: var(--OFF);
+    --stroke: var(--stroke-width, .01em) var(--stroke-color, #000000);
+
+    position: relative;
+    background: var(--background);
+
+    color: var(--foreground-color, black);
+    font-family: var(--font-family, sans-serif);
+    font-weight: var(--font-weight, normal);
+    font-style: var(--font-style, normal);
+    font-size: max(var(--font-size, 100vh), 1vh);
+    text-align: var(--text-align, center);
+    text-shadow: var(--has-shadow, var(--shadow));
+    -webkit-text-stroke: var(--has-stroke, var(--stroke));
+}
+
+.big-text .countdown-wrapper .countdown,
+.big-text .text-wrapper .text {
+    /* Private properties for neatness */
+    --_scale: min(var(--content-scale-h), var(--content-scale-v));
+    --_padding-h: calc(var(--padding, var(--padding-regular)) * var(--_scale));
+    --_padding-v: calc(0.75 * var(--padding, var(--padding-regular)) * var(--_scale));
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: var(--_padding-v);
+    padding-right: min(var(--_padding-h), 40%);
+    padding-bottom: var(--_padding-v);
+    padding-left: min(var(--_padding-h), 40%);
+}
+
+.big-text .countdown-wrapper .countdown p,
+.big-text .text-wrapper .text p {
+    width: 100%;
+}
+
+
+/* Customisable resizing behaviour
+ ******************************************************************************/
+
+.big-text .is-resizing {
+    visibility: hidden;
+}
+
+.big-text .is-resizing .countdown,
+.big-text .is-resizing .text {
+    display: block;
+    bottom:  auto;
+    right:  auto;
+}
+
+/* Add an extra character to coundown when resizing, to compensate for narrow numbers */
+.big-text .is-resizing .countdown > ::after {
+    display: inline;
+    content: '.';
+    visibility: hidden;
+}
+
+/* Countdown
+ ******************************************************************************/
+
+.big-text .countdown {
+    font-variant-numeric: tabular-nums;
+}
+
+.big-text:not(.has-countdown) .countdown-wrapper {
+    display: none;
+}
+
+/* Image
+ ******************************************************************************/
+
+.big-text .image-wrapper {
+    position: relative;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.big-text:not(.has-image):not(.has-background-image) .image-wrapper {
+    display: none;
+}
+
+.big-text .image-wrapper figure {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.big-text .image-wrapper figure img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Background image
+ ******************************************************************************/
+.big-text.has-background-image {
+    display: flex;
+    justify-content: var(--content-placement-h, center);
+    align-items: var(--content-placement-v, center);
+}
+
+.big-text.has-background-image .layout {
+    max-height: calc(var(--content-scale-h) * 100%);
+    max-width: calc(var(--content-scale-v) * 100%);
+}
+
+.big-text.has-background-image .image-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.big-text.has-background-image .image-wrapper figure {
+    height: 100%;
+    width: 100%;
+}
+
+/******************************************************************************
+ * BigText Layout
+ ******************************************************************************/
+
+/* Grid Setup
+ ******************************************************************************/
+.big-text .countdown-wrapper { grid-area: cnt; }
+.big-text .image-wrapper { grid-area: img; }
+.big-text .text-wrapper { grid-area: txt; }
+
+.big-text.has-countdown:not(.has-image) .countdown-wrapper,
+.big-text.has-image:not(.has-countdown) .image-wrapper {
+    grid-area: aside;
+}
+
+.big-text .layout {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    grid-template-areas: "txt";
+    height: 100%;
+    width: 100%;
+}
+
+/* Layouts: 2 areas
+ ******************************************************************************/
+.big-text:is(.has-image, .has-countdown) .layout {
+    grid-template-columns: auto;
+    grid-template-rows: var(--grid-size-1, auto) auto;
+}
+
+.big-text:is(.has-image, .has-countdown) .layout {
+    grid-template-areas: "txt" "aside";
+}
+
+.big-text:is(.has-image, .has-countdown):is(.l01, .l03) .layout {
+    grid-template-areas: "aside" "txt";
+}
+
+.big-text:is(.has-image, .has-countdown):is([class^="l1"], [class*="l1"]) .layout {
+    grid-template-columns: var(--grid-size-1, auto) auto;
+    grid-template-rows: auto;
+}
+
+.big-text:is(.has-image, .has-countdown):is(.l10, .l12) .layout {
+    grid-template-areas: "txt aside";
+}
+
+.big-text:is(.has-image, .has-countdown):is(.l11, .l13) .layout {
+    grid-template-areas: "aside txt";
+}
+
+/* Layouts: 3 areas (simple, column)
+ ******************************************************************************/
+.big-text.has-image.has-countdown .layout {
+    /* Some magic to make slider behaviour somewhat intuitive */
+    --_grid-size-1: clamp(20%, calc(0.666 * var(--grid-size-1, 100%)), 60%);
+    --_grid-size-2: clamp(20%, calc(0.666 * var(--grid-size-2, 100%)), calc(80% - var(--_grid-size-1)));
+    grid-template-columns: auto;
+    grid-template-rows: var(--_grid-size-1) var(--_grid-size-2) auto;
+}
+
+.big-text.has-image.has-countdown .layout,
+.big-text.has-image.has-countdown.l20 .layout { grid-template-areas: "txt" "cnt" "img"; }
+.big-text.has-image.has-countdown.l21 .layout { grid-template-areas: "img" "txt" "cnt"; }
+.big-text.has-image.has-countdown.l22 .layout { grid-template-areas: "cnt" "txt" "img"; }
+.big-text.has-image.has-countdown.l23 .layout { grid-template-areas: "img" "cnt" "txt"; }
+.big-text.has-image.has-countdown.l24 .layout { grid-template-areas: "txt" "img" "cnt"; }
+.big-text.has-image.has-countdown.l25 .layout { grid-template-areas: "cnt" "img" "txt"; }
+
+/* Layouts: 3 areas (simple, row)
+ ******************************************************************************/
+.big-text.has-image.has-countdown:is([class^="l3"], [class*="l3"]) .layout {
+    grid-template-columns: var(--_grid-size-1) var(--_grid-size-2) auto;
+    grid-template-rows: auto;
+}
+
+.big-text.has-image.has-countdown.l30 .layout { grid-template-areas: "txt cnt img"; }
+.big-text.has-image.has-countdown.l31 .layout { grid-template-areas: "img txt cnt"; }
+.big-text.has-image.has-countdown.l32 .layout { grid-template-areas: "cnt txt img"; }
+.big-text.has-image.has-countdown.l33 .layout { grid-template-areas: "img cnt txt"; }
+.big-text.has-image.has-countdown.l34 .layout { grid-template-areas: "txt img cnt"; }
+.big-text.has-image.has-countdown.l35 .layout { grid-template-areas: "cnt img txt"; }
+
+
+/* Layouts: 3 areas (complex)
+ ******************************************************************************/
+.big-text.has-image.has-countdown:is([class^="l4"], [class*="l4"], [class^="l5"], [class*="l5"], [class^="l6"], [class*="l6"], [class^="l7"], [class*="l7"]) .layout {
+    grid-template-columns: var(--grid-size-1, 100%) auto;
+    grid-template-rows: var(--grid-size-2, 100%) auto;
+}
+
+.big-text.has-image.has-countdown.l40 .layout { grid-template-areas: "txt txt" "cnt img"; }
+.big-text.has-image.has-countdown.l41 .layout { grid-template-areas: "img img" "txt cnt"; }
+.big-text.has-image.has-countdown.l42 .layout { grid-template-areas: "cnt cnt" "txt img"; }
+.big-text.has-image.has-countdown.l43 .layout { grid-template-areas: "img img" "cnt txt"; }
+.big-text.has-image.has-countdown.l44 .layout { grid-template-areas: "txt txt" "img cnt"; }
+.big-text.has-image.has-countdown.l45 .layout { grid-template-areas: "cnt cnt" "img txt"; }
+
+.big-text.has-image.has-countdown.l50 .layout { grid-template-areas: "txt cnt" "txt img"; }
+.big-text.has-image.has-countdown.l51 .layout { grid-template-areas: "img txt" "img cnt"; }
+.big-text.has-image.has-countdown.l52 .layout { grid-template-areas: "cnt txt" "cnt img"; }
+.big-text.has-image.has-countdown.l53 .layout { grid-template-areas: "img cnt" "img txt"; }
+.big-text.has-image.has-countdown.l54 .layout { grid-template-areas: "txt img" "txt cnt"; }
+.big-text.has-image.has-countdown.l55 .layout { grid-template-areas: "cnt img" "cnt txt"; }
+
+.big-text.has-image.has-countdown.l60 .layout { grid-template-areas: "txt cnt" "img img"; }
+.big-text.has-image.has-countdown.l61 .layout { grid-template-areas: "img txt" "cnt cnt"; }
+.big-text.has-image.has-countdown.l62 .layout { grid-template-areas: "cnt txt" "img img"; }
+.big-text.has-image.has-countdown.l63 .layout { grid-template-areas: "img cnt" "txt txt"; }
+.big-text.has-image.has-countdown.l64 .layout { grid-template-areas: "txt img" "cnt cnt"; }
+.big-text.has-image.has-countdown.l65 .layout { grid-template-areas: "cnt img" "txt txt"; }
+
+.big-text.has-image.has-countdown.l70 .layout { grid-template-areas: "txt img" "cnt img"; }
+.big-text.has-image.has-countdown.l71 .layout { grid-template-areas: "img cnt" "txt cnt"; }
+.big-text.has-image.has-countdown.l72 .layout { grid-template-areas: "cnt img" "txt img"; }
+.big-text.has-image.has-countdown.l73 .layout { grid-template-areas: "img txt" "cnt txt"; }
+.big-text.has-image.has-countdown.l74 .layout { grid-template-areas: "txt cnt" "img cnt"; }
+.big-text.has-image.has-countdown.l75 .layout { grid-template-areas: "cnt txt" "img txt"; }
+
+@media (max-aspect-ratio: 1/1.5) {
+    .big-text:is(.has-image, .has-countdown):is([class^="l1"], [class*="l1"]) .layout {
+        grid-template-columns: auto;
+        grid-template-rows: var(--grid-size-1, auto) auto;
+    }
+
+    .big-text:is(.has-image, .has-countdown):is(.l10, .l12) .layout {
+        grid-template-areas: "txt" "aside";
+    }
+
+    .big-text:is(.has-image, .has-countdown):is(.l11, .l13) .layout {
+        grid-template-areas: "aside" "txt";
+    }
+
+    .big-text.has-image.has-countdown:is([class^="l3"], [class*="l3"], [class^="l4"], [class*="l4"], [class^="l5"], [class*="l5"], [class^="l6"], [class*="l6"], [class^="l7"], [class*="l7"]) .layout {
+        grid-template-columns: auto;
+        grid-template-rows: var(--_grid-size-1) var(--_grid-size-2) auto;
+    }
+
+    .big-text.has-image.has-countdown .layout,
+    .big-text.has-image.has-countdown:is(.l20, .l30, .l40, .l50, .l60, .l70) .layout { grid-template-areas: "txt" "cnt" "img"; }
+    .big-text.has-image.has-countdown:is(.l21, .l31, .l41, .l51, .l61, .l71) .layout { grid-template-areas: "img" "txt" "cnt"; }
+    .big-text.has-image.has-countdown:is(.l22, .l32, .l42, .l52, .l62, .l72) .layout { grid-template-areas: "cnt" "txt" "img"; }
+    .big-text.has-image.has-countdown:is(.l23, .l33, .l43, .l53, .l63, .l73) .layout { grid-template-areas: "img" "cnt" "txt"; }
+    .big-text.has-image.has-countdown:is(.l24, .l34, .l44, .l54, .l64, .l74) .layout { grid-template-areas: "txt" "img" "cnt"; }
+    .big-text.has-image.has-countdown:is(.l25, .l35, .l45, .l55, .l65, .l75) .layout { grid-template-areas: "cnt" "img" "txt"; }
+}
+
+/*******************************************************************************
+ * Buttons (and button-like components)
+ ******************************************************************************/
+
+button,
+.button,
+.toggle-button input ~ label,
+.select {
+    font-size: inherit;
+    line-height: inherit;
+    background: var(--light-grey);
+    color: var(--black);
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+    border-radius: var(--radius);
+    padding: var(--component-padding);
+    user-select: none;
+    box-shadow: var(--shadow-small);
+    transition-duration: var(--duration);
+    transition-property: transform, background-color, box-shadow;
+    font-weight: normal;
+}
+
+button:not(:last-child),
+.button:not(:last-child),
+.dropdown:not(:last-child),
+.toggle-button:not(:last-child),
+.select {
+    margin-right: var(--local-gap-small);
+    margin-bottom: 0;
+}
+
+button:hover,
+.button:hover,
+.dropdown .button:hover,
+.toggle-button:hover input ~ label,
+.select:hover,
+.select:focus-within {
+    background: var(--light-grey);
+    box-shadow: var(--shadow-medium);
+    transform: scale(1.05);
+    position: relative; /* Pull focussed element to front, so outline won't be interrupted */
+    z-index: 11;
+}
+
+button:focus,
+.button:focus,
+.toggle-button:focus-within label,
+.select:focus-within {
+    outline: var(--outline);
+    position: relative; /* Pull focussed element to front, so outline won't be interrupted */
+    z-index: 10;
+}
+
+button:active,
+.button:active,
+.toggle-button input:active ~ label,
+.select:active {
+    background: var(--grey);
+}
+
+button svg.icon,
+.button svg.icon,
+.toggle-button label svg.icon {
+    position: relative;
+    top: -.075em; /* Magic number to make it look centered… */
+    vertical-align: middle;
+}
+
+
+button svg.icon:only-child,
+.button svg.icon:only-child,
+.toggle-button label svg.icon:only-child {
+    margin-left: -.375em;
+    margin-right: -.375em;
+}
+
+button.is-expanded,
+.button.is-expanded,
+.toggle-button.is-expanded input ~ label,
+.select.is-expanded {
+    display: block;
+    width: 100%;
+}
+
+button.is-primary,
+.button.is-primary,
+.toggle-button.is-primary input ~ label,
+.select.is-primary {
+    background: var(--primary);
+    color: var(--primary-invert);
+    font-size: 1.2em;
+}
+
+button.is-success,
+.button.is-success,
+.toggle-button.is-success input ~ label,
+.select.is-success {
+    background: var(--success);
+    color: var(--success-invert);
+    font-size: 1.2em;
+}
+
+button.is-success:focus,
+.button.is-success:focus,
+.toggle-button.is-success:focus-within label,
+.select.is-success:focus-within {
+    outline: none;
+}
+
+button:not(.is-success) .success-message,
+.button:not(.is-success) .success-message {
+    display: none;
+}
+
+button.is-success .success-message,
+.button.is-success .success-message {
+    display: inline;
+}
+
+button.is-success .cta,
+.button.is-success .cta {
+    display: none;
+}
+
+
+button[disabled]:hover,
+.button[disabled]:hover,
+.dropdown .button[disabled]:hover,
+.toggle-button:hover input[disabled] ~ label{
+    box-shadow: var(--shadow-small);
+    transform: none;
+}
+
+
+/*******************************************************************************
+ * Basic form parts
+ ******************************************************************************/
+
+.field:not(:last-child) {
+    margin-bottom: var(--gap);
+}
+
+form .help,
+.field .help {
+    display: block;
+    font-size: 80%;
+}
+
+.field > :not(:last-child) {
+    margin-bottom: var(--gap-small);
+}
+
+.field > :is(button, .button, .button-group)  {
+    margin-bottom: 0;
+}
+
+label,
+.label {
+    font-weight: bold;
+    display: block;
+    width: 100%;
+}
+
+input {
+    width: 100%;
+}
+
+input:invalid,
+select:invalid {
+    outline: var(--outline-invalid);
+}
+
+input:not([type=color]):not([type=checkbox]):not([type=radio]):not([type=range]) {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--dark-grey);
+    box-sizing: border-box;
+    color: var(--black);
+    display: inline-block;
+    font-size: inherit;
+    line-height: inherit;
+    padding: var(--component-padding);
+}
+
+input[type=number] {
+    padding-right: var(--local-gap-small);
+}
+
+input:not([type=color]):not([type=checkbox]):not([type=radio]):not([type=range]):focus {
+    outline: var(--outline);
+}
+
+fieldset {
+    border: none;
+}
+
+fieldset.field {
+    padding: 0 var(--gap);
+    margin: 0 calc(var(--gap) * -1);
+}
+
+fieldset:not(.field):not(.dropdown):not(.button-group) {
+    padding: var(--gap);
+    box-shadow: var(--shadow-medium);
+    border-radius: var(--radius);
+    margin-bottom: var(--gap);
+}
+
+fieldset legend {
+    font-weight: bold;
+    padding: 0;
+    float: left;
+    width: 100%;
+    margin-bottom: var(--gap-small);
+    font-size: 1.2em;
+}
+
+
+/*******************************************************************************
+ * Components
+ ******************************************************************************/
+
+
+/* Range input
+ ******************************************************************************/
+input[type=range] {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    /* Range input is not focussable, number input can be used instead */
+    outline: none;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: .5em;
+    border-radius: .25em;
+    background: var(--grey);
+    box-shadow: var(--shadow-inset);
+}
+
+input[type=range]::-moz-range-progress {
+    background: var(--primary);
+    width: 100%;
+    height: .5em;
+    border-radius: .25em;
+    box-shadow: var(--shadow-inset);
+}
+
+input[type=range]::-moz-range-thumb {
+    background: var(--grey);
+    box-shadow: var(--shadow-small);
+    border: none;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 50%;
+    transition-duration: 75ms;
+    transition-property: transform, box-shadow;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    box-shadow: var(--shadow-medium);
+    transform: scale(1.05);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: .5em;
+    border-radius: .25em;
+    background: var(--grey);
+    box-shadow: var(--shadow-inset);
+}
+
+/* Webkit doesn't support styling of value indicator */
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: var(--grey);
+    box-shadow: var(--shadow-small);
+    border: none;
+    height: 1.5em;
+    width: 1.5em;
+    margin-top: -.5em;
+    border-radius: 50%;
+    transition-duration: 75ms;
+    transition-property: transform, box-shadow;
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    box-shadow: var(--shadow-medium);
+    transform: scale(1.05);
+}
+
+
+/*******************************************************************************
+ * Select
+ ******************************************************************************/
+
+.select {
+    padding: 0;
+    position: relative;
+    width: 100%;
+}
+
+.select select {
+    appearance: none;
+    border: none;
+    padding: var(--component-padding);
+    background: none;
+    width: 100%;
+    cursor: inherit;
+    color: var(--black);
+}
+
+.select select:focus {
+    outline: none;
+}
+
+.select select,
+.dropdown .button {
+    position: relative;
+    padding-right: calc(1.125em + var(--component-padding-h));
+    text-align: left;
+}
+
+.select::after,
+.dropdown .button::after {
+    border: 2px solid transparent;
+    border-radius: 2px;
+    border-right: 0;
+    border-top: 0;
+    content: " ";
+    display: block;
+    height: .625em;
+    margin-top: -.4375em;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    width: .625em;
+    
+    border-color: currentColor;
+    right: var(--component-padding-h);
+    z-index: 1;
+}
+
+/* Button groups
+ ******************************************************************************/
+
+.button-group {
+    display: inline-flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    padding: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-small);
+    vertical-align: top;
+}
+
+.button-group:not(:last-child) {
+    margin-right: var(--local-gap-small);
+}
+
+.button-group > button:not(:last-child),
+.button-group > .button:not(:last-child),
+.button-group > .dropdown:not(:last-child),
+.button-group > .toggle-button:not(:last-child) {
+    margin-right: 0;
+}
+
+.button-group > button,
+.button-group > .button,
+.button-group > .dropdown .button,
+.button-group > .toggle-button label,
+.button-group > font-select::part(trigger) {
+    box-shadow: none;
+    vertical-align: top;
+}
+
+.button-group > button:not(:first-child),
+.button-group > .button:not(:first-child),
+.button-group > .dropdown:not(:first-child) .button,
+.button-group > .toggle-button:not(:first-child) label,
+.button-group > font-select:not(:first-child)::part(trigger) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.button-group > button:not(:last-child),
+.button-group > .button:not(:last-child),
+.button-group > .dropdown:not(:last-child) .button,
+.button-group > .toggle-button:not(:last-child) label,
+.button-group > font-select:not(:last-child)::part(trigger) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.button-group > button:hover,
+.button-group > .button:hover,
+.button-group > .dropdown .button:hover,
+.button-group > .toggle-button:hover label,
+.button-group > font-select:hover::part(trigger) {
+    box-shadow: var(--shadow-medium);
+    border-radius: var(--radius);
+}
+
+.button-group > button:focus,
+.button-group > .button:focus,
+.button-group > .dropdown .button:focus,
+.button-group > .toggle-button:focus label,
+.button-group > .toggle-button:focus-within label,
+.button-group > font-select::part(trigger):focus,
+.button-group > font-select:invalid::part(trigger) {
+    border-radius: var(--radius);
+}
+
+/* Toggle button
+ ******************************************************************************/
+
+.toggle-button {
+    display: inline-block;
+}
+
+.toggle-button input {
+    outline: 0;
+    user-select: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.toggle-button input:checked ~ label {
+    background: var(--grey);
+}
+
+
+/* Dropdown
+ ******************************************************************************/
+
+.dropdown,
+.dropdown:not(:last-child) {
+    padding: 0;
+    border: none;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.dropdown .button {
+    margin-right: 0;
+}
+
+.dropdown .button > * {
+    vertical-align: top;
+}
+
+.dropdown .options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    flex-direction: column;
+    background: white;
+    box-shadow: var(--shadow-medium);
+    border-radius: var(--radius);
+    overflow: hidden;
+    z-index: 20;
+    min-width: 100%;
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.dropdown .options input {
+    outline: 0;
+    user-select: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.dropdown .options button,
+.dropdown .options label {
+    display: block;
+    padding: var(--component-padding);
+    white-space: nowrap;
+    position: relative;
+    font-weight: normal;
+    width: 100%;
+    text-align: left;
+    box-shadow: none;
+    background: none;
+    transform: none;
+    outline: none;
+    border-radius: 0;
+}
+
+.dropdown .options label:hover,
+.dropdown .options label:focus,
+.dropdown .options button:hover,
+.dropdown .options button:focus {
+    background: var(--light-grey);
+}
+
+.dropdown .options :checked + label,
+.dropdown .options button.is-active {
+    background: var(--light-grey);
+}
+
+.dropdown .options :checked + label:hover,
+.dropdown .options :checked:focus + label,
+.dropdown .options button.is-active:hover,
+.dropdown .options button.is-active:focus {
+    background: var(--grey);
+}
+
+.dropdown.is-active .button {
+    box-shadow: var(--shadow-medium);
+}
+
+.dropdown.is-active .options {
+    display: flex;
+}
+
+.dropdown.is-active .button {
+    position: relative;
+}
+
+
+/* Switch
+ * 
+ * Based on Cover Style System's implementation of bulma-switch.
+ * See https://github.com/Wikiki/bulma-switch
+ ******************************************************************************/
+
+.switch {
+    --switch-size: 1em;
+    --switch-height: calc(var(--switch-size) * 1.5);
+    --switch-width: calc(var(--switch-height) * 2);
+    --switch-paddle-offset: .15em;
+    --switch-paddle-height: calc(var(--switch-height) - var(--switch-paddle-offset) * 2);
+    --switch-paddle-width: calc(var(--switch-height) - var(--switch-paddle-offset) * 2);
+    --switch-paddle-active-offset: calc(var(--switch-width) - var(--switch-paddle-width) - var(--switch-paddle-offset));
+
+    --switch-checked-color: var(--primary);
+    --switch-unchecked-color: var(--grey);
+    --switch-base-color: var(--white);
+}
+
+.switch.is-small  { --switch-size: .75em; }
+.switch.is-medium { --switch-size: 1.25em; }
+.switch.is-large  { --switch-size: 1.5em; }
+
+.switch label {
+    position: relative;
+    display: inline-block;
+    font-size: var(--switch-size);
+    line-height: initial;
+    padding-left: calc(var(--switch-width) + var(--local-gap-small));
+    padding-top: 0.2em;
+    margin-bottom: 0;
+    cursor: pointer;
+    min-width: var(--switch-width);
+    min-height: var(--switch-height);
+    vertical-align: middle;
+}
+
+.switch input {
+    outline: 0;
+    user-select: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.switch input:focus ~ label::before {
+    outline: var(--outline);
+}
+
+.switch input ~ label::before {
+    position: absolute;
+    display: block;
+    top: calc(50% - var(--switch-height) * .5);
+    left: 0;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    border-radius: calc(var(--switch-height) / 2);
+    background: var(--switch-unchecked-color);
+    content: '';
+
+
+    transition-duration: var(--duration);
+    transition-property: background;
+    box-shadow: var(--shadow-inset);
+}
+
+.switch input ~ label::after {
+    background: var(--switch-base-color);
+    border-radius: 50%;
+    box-shadow: var(--shadow-small);
+    content: '';
+    display: block;
+    height: var(--switch-paddle-height);
+    left: var(--switch-paddle-offset);
+    position: absolute;
+    top: calc(50% - var(--switch-paddle-height) * .5);
+    transform: translate3d(0, 0, 0);
+    transition-duration: var(--duration);
+    transition-property: transform, box-shadow, left, right;
+    transition: all 0.25s ease-out;
+    width: var(--switch-paddle-width);
+}
+
+.switch:hover input ~ label::after {
+    box-shadow: var(--shadow-medium);
+    transform: scale(1.05);
+}
+
+.switch input:checked ~ label::before {
+    background: var(--switch-checked-color);
+}
+
+.switch input:checked ~ label::after {
+    left: var(--switch-paddle-active-offset);
+    background-image: linear-gradient(to bottom, var(--switch-base-color) 20%, transparent 20%, transparent 80%, var(--switch-base-color) 80%),
+                      linear-gradient(to right, transparent 43.75%, var(--switch-checked-color) 43.75%, var(--switch-checked-color) 56.25%, transparent 56.25%);
+}
+
+.switch.is-right label {
+    padding-left: 0;
+    padding-right: calc(var(--switch-width) + var(--local-gap-small));
+}
+
+.switch.is-right input ~ label::before {
+    left: auto;
+    right: 0;
+}
+
+.switch.is-right input ~ label::after {
+    left: auto;
+    right: var(--switch-paddle-active-offset); /* for right-aligned, active/inactive states are swapped */
+}
+
+.switch.is-right input:checked ~ label::after {
+    left: auto;
+    right: var(--switch-paddle-offset);
+}
+
+
+/* Dialog
+ ******************************************************************************/
+
+@keyframes animateZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+dialog {
+    border-radius: var(--radius);
+    border: none;
+    box-shadow: var(--shadow-large);
+    margin: auto;
+    max-width: var(--controls-width);
+    padding: var(--gap);
+}
+
+dialog[open] {
+    animation: animateZoom var(--duration);
+}
+
+dialog form {
+    text-align: right;
+}
+
+
+/*******************************************************************************
+ * Specific components
+ ******************************************************************************/
+
+/* Slider input
+ ******************************************************************************/
+.slider-input {
+    display: flex;
+    gap: var(--local-gap-small);
+}
+
+.slider-input input[type=number] {
+    flex: 0 0 10ch;
+    width: 100%;
+}
+
+.slider-input input[type=range] {
+    flex: 0 1 100%;
+    width: 100%;
+}
+
+/* Colour input
+ ******************************************************************************/
+.color-input {
+    display: flex;
+    gap: var(--local-gap-small);
+    flex-flow: row wrap;
+}
+
+.color-input input[type=color] {
+    outline: 0;
+    user-select: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.color-input input[type=color]:focus + .button {
+    outline: var(--outline);
+}
+
+.color-input button,
+.color-input .button {
+    height: 2em;
+    width: 2em;
+}
+
+.color-input .color-button svg.icon {
+    display: none;
+}
+
+.color-input .color-button.is-active svg.icon {
+    display: inline-block;
+}
+
+.color-input button:not(:last-child) {
+    margin-right: 0;
+}
+
+
+/* Font picker
+ ******************************************************************************/
+
+font-select:invalid::part(trigger):not(:focus) {
+    outline: var(--outline-invalid);
+}
+
+/* Redo everything in rems... */
+.font-select .button {
+    width: 8rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-top: .25rem;
+    padding-right: calc(1.125rem + .75rem);
+    padding-bottom: .25rem;
+    padding-left: .75rem;
+    line-height: 1.5rem;
+}
+
+.font-select .button::after {
+    height: .625rem;
+    margin-top: -.4375rem;
+    width: .625rem;
+    right: .75rem;
+}
+
+.font-select .options button,
+.font-select .options label {
+    padding: .25rem .75rem;
+    line-height: 1.5rem;
+}
+
+
+/* Layout picker
+ ******************************************************************************/
+
+.layout-picker {
+    overflow-x: auto;
+    overflow-y: visible;
+    margin-top: calc(var(--gap-small) * -1);
+    margin-right: calc(var(--gap) * -1);
+    margin-bottom: 0;
+    margin-left: calc(var(--gap) * -1);
+}
+
+.layout-picker .button-group {
+    flex-wrap: nowrap;
+    margin: var(--gap-small) var(--gap);
+}
+
+.layout-picker .dropdown {
+    position: static;
+}
+
+.layout-picker .dropdown .button {
+    padding: var(--gap-small);
+}
+
+.layout-picker .dropdown .button[data-checked] {
+    background: var(--grey);
+}
+
+.layout-picker .dropdown .button::after {
+    display: none;
+}
+
+.layout-picker .dropdown .options {
+    --grid-size: calc(var(--layout-picker-icon-size) + 2 * var(--gap-small));
+    top: auto;
+    right: auto;
+    left: var(--gap);
+    min-width: unset;
+    max-width: calc(100% - 2 * var(--gap));
+    width: 100%;
+    grid-auto-columns: var(--grid-size);
+    grid-template-rows: var(--grid-size) var(--grid-size);
+    grid-auto-flow: column;
+    justify-content: center;
+}
+
+.layout-picker .dropdown:is(.l0, .l1) .options {
+    grid-template-rows: 4.5em;
+    width: auto;
+}
+
+.dropdown.is-active .options {
+    display: grid;
+}
+
+.layout-picker .dropdown .options label {
+    padding: var(--gap-small);
+    border-radius: var(--radius);
+}
+
+.layout-picker .icon {
+    display: grid;
+    height: var(--layout-picker-icon-size);
+    width: var(--layout-picker-icon-size);
+    border-radius: var(--radius);
+    overflow: hidden;
+    outline: 2px solid currentColor;
+    outline-offset: -1px;
+}
+
+.layout-picker .icon:empty::after,
+.layout-picker .icon:empty::before {
+    display: block;
+    content: '';
+}
+
+.layout-picker .icon:empty::before { grid-area: a; }
+.layout-picker .icon :nth-child(1) { grid-area: a; }
+.layout-picker .icon:empty::after  { grid-area: b; }
+.layout-picker .icon :nth-child(2) { grid-area: b; }
+.layout-picker .icon :nth-child(3) { grid-area: c; }
+
+.layout-picker .icon:empty::after,
+.layout-picker .icon:empty::before,
+.layout-picker .icon * {
+    border: 2px solid currentColor;
+    font-size: 80%;
+    line-height: 1em;
+    margin: -1px;
+}
+
+.layout-picker .icon * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout-picker .l0 .icon {
+    grid-template-columns: auto;
+    grid-template-rows: 50% 50%;
+    grid-template-areas: "a" "b";
+}
+
+.layout-picker .l1 .icon {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    grid-template-areas: "a b";
+}
+
+.layout-picker .l2 .icon {
+    grid-template-columns: auto;
+    grid-template-rows: 33.333% 33.333% 33.333%;
+    grid-template-areas: "a" "b" "c";
+}
+
+.layout-picker .l3 .icon {
+    grid-template-columns: 33.333% 33.333% 33.333%;
+    grid-template-rows: auto;
+    grid-template-areas: "a b c";
+}
+
+.layout-picker :is(.l4, .l5, .l6, .l7) .icon {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+}
+
+.layout-picker .l4 .icon { grid-template-areas: "a a" "b c"; }
+.layout-picker .l5 .icon { grid-template-areas: "a b" "a c"; }
+.layout-picker .l6 .icon { grid-template-areas: "a b" "c c"; }
+.layout-picker .l7 .icon { grid-template-areas: "a c" "b c"; }
+
+
+/*******************************************************************************
+ * Controls
+ ******************************************************************************/
+
+.controls-trigger,
+.controls-trigger:hover,
+.controls-trigger:focus {
+    position: fixed;
+    top: .4em;
+    left: .4em;
+    z-index: 1;
+    box-shadow: none;
+    background: none;
+    font-size: 1.2em;
+    padding: 0 .5em;
+}
+
+.controls-trigger:hover,
+.controls-trigger:focus {
+    transform: scale(1.2);
+    background: var(--light-grey);
+    box-shadow: var(--shadow-medium);
+}
+
+.controls {
+    flex: 0 0 0%;
+    overflow: hidden;
+    transition: flex-basis var(--duration-long) ease-out, box-shadow 0ms var(--duration-long);
+    position: relative;
+    z-index: 1;
+}
+
+.controls.is-active {
+    flex-basis: var(--controls-width);
+    box-shadow: var(--shadow-large);
+    transition: flex-basis var(--duration-long) ease-out, box-shadow 0ms;
+}
+
+.controls form {
+    width: var(--controls-width);
+    max-width: var(--controls-width);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: var(--white);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--gap);
+}
+
+.controls form.modal {
+    right: 100%;
+    transition: right var(--duration-long) ease-out, box-shadow 0ms var(--duration-long);
+}
+
+.controls form.modal.is-active {
+    right: 0%;
+    box-shadow: var(--shadow-large);
+    transition: right var(--duration-long) ease-out, box-shadow 0ms;
+}
+
+.controls form header {
+    display: flex;
+    gap: var(--gap-small);
+    background: var(--light-grey);
+    box-shadow: var(--shadow-small);
+    padding: 0;
+    margin-top: calc(var(--gap) * -1);
+    margin-right: calc(var(--gap) * -1);
+    margin-bottom: var(--gap);
+    margin-left: calc(var(--gap) * -1);
+    width: auto;
+    max-width: unset;
+    height: var(--header-height);
+    line-height: var(--header-height);
+    position: sticky;
+    top: calc(var(--gap) * -1);
+    z-index: 30;
+}
+
+.controls form header button {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    margin-right: 0;
+    padding-left: calc(var(--component-padding-h) + var(--gap-small));
+}
+
+.controls form header button:last-child {
+
+    padding-right: calc(var(--component-padding-h) + var(--gap-small));
+    padding-left: 0;
+}
+
+.controls form header button:hover {
+    transform: scale(1.2); /* exaggerated effect, as it's the only hover effect on this button */
+}
+
+.controls form header button:focus {
+    outline: none;
+}
+
+.controls form header button:focus .icon{
+    outline: var(--outline);
+    outline-offset: 1px;
+    border-radius: var(--radius);
+}
+
+.controls form header button .icon {
+    top: 0;
+    vertical-align: baseline;
+}
+
+.controls form header :is(h1, h2, h3, h4, h5, h6) {
+    flex-grow: 1;
+}
+
+@media (max-width: 900px) {
+    .controls {
+        position: absolute;
+        top: 0;
+        right: 100%;
+        bottom: 0;
+        width: 100%;
+        max-width: 100%;
+        z-index: 10;
+    }
+
+    .controls.is-active {
+        right: 0;
+    }
+
+    .controls form {
+        width: 100%;
+        max-width: 100%;
+    }
+}
