@@ -75,7 +75,7 @@ class FilemanagerField {
     }
 
     pickFile(file) {
-        // Derrive correct url
+        // Derive correct url
         const fileUrl = `${file.fullPath}`;
 
         // Set url everywhere

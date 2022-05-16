@@ -12,7 +12,7 @@ CREATE TABLE `slide` (
     `description` VARCHAR(2048),
     `is_active` TINYINT NOT NULL DEFAULT '0',
     `type` ENUM('image', 'web') NOT NULL,
-    `url` VARCHAR(2048) NOT NULL,
+    `url` VARCHAR(4096) NOT NULL,
     `background_color` VARCHAR(7) NOT NULL DEFAULT '#ffffff',
     `fit` ENUM('cover','contain'),
     `order` INT NOT NULL,

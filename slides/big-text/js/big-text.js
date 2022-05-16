@@ -745,6 +745,8 @@ class BigTextControls extends BigTextControlForm {
 
         this.generateLinkButton = context.querySelector('[data-generate-link-button]');
         this.generateLinkButton.addEventListener('click', this.handleGenerateLink.bind(this));
+        this.generateSlideButton = context.querySelector('[data-generate-slide-button]');
+        this.generateSlideButton.addEventListener('click', this.handleGenerateSlide.bind(this));
 
         this.modals = {};
         for (let el of context.querySelectorAll('[data-modal]'))
@@ -760,15 +762,30 @@ class BigTextControls extends BigTextControlForm {
             await navigator.clipboard.writeText(url);
             this.generateLinkButton.blur();
             this.generateLinkButton.disabled = true;
-            this.generateLinkButton.classList.replace('is-primary', 'is-success');
+            this.generateLinkButton.classList.add('is-success');
             setTimeout(() => {
                 this.generateLinkButton.disabled = false;
-                this.generateLinkButton.classList.replace('is-success', 'is-primary');
+                this.generateLinkButton.classList.remove('is-success');
             }, 2000);
         } catch (e) {
             console.error(e);
             prompt('Error copying link. Please copy it from here instead:', url);
         }
+    }
+
+    async handleGenerateSlide(evt) {
+        // Generate URL with disabled controls
+        const controlsEnabled = this.bigText.options['controls-enabled']?.value || true;
+        this.bigText.options['controls-enabled'] = false;
+        const url = this.bigText.generateUrl();
+        this.bigText.options['controls-enabled'] = controlsEnabled;
+
+        const createSlideUrl = new URL('/admin/?view=create', window.location.toString());
+        let searchParams = createSlideUrl.searchParams;
+        searchParams.set('type', 'web');
+        searchParams.set('url', url);
+        createSlideUrl.search = searchParams.toString();
+        window.open(createSlideUrl, '_blank').focus();
     }
 
     handleModal(evt) {
@@ -886,6 +903,10 @@ class BigText {
             if (url.searchParams.has(option))
                 this.options[option] = url.searchParams.get(option);
         }
+
+        // Disable controls if on cover screen
+        if (url.searchParams.has('cover-screen-iteration'))
+            this.options['controls-enabled'] = false;
     }
 
     _handleResize() {

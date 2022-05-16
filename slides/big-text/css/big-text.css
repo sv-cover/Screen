@@ -165,7 +165,7 @@ noscript {
 }
 
 hr {
-    border: 1px solid var(--grey);
+    border-top: 1px solid var(--grey);
     margin: var(--gap-large) 0;
 }
 

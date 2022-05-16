@@ -13,7 +13,7 @@ class SlideForm extends Bootstrap3Form
             'name'                   => new StringField  ('Name',                        false, ['maxlength' => 255]),
             'description'            => new TextareaField('Description (optional)',      true,  ['maxlength' => 2048, 'placeholder' => 'Describe details about this that could be useful for future reference.']),
             'type'                   => new SelectField  ('Type', $model::$type_options, false, ['placeholder' => 'Select slide type']),
-            'url'                    => new UrlField     ('URL',                         true,  ['maxlength' => 2048]),
+            'url'                    => new UrlField     ('URL',                         true,  ['maxlength' => 4096]),
             'filemanager_image_path' => new StringField  ('Image',                       true,  ['maxlength' => 2048]),
             'background_color'       => new StringField  ('Background colour',           true,  ['maxlength' => 7]),
             'fit'                    => new SelectField  ('Fit', $model::$fit_options,   true),

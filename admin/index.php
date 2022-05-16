@@ -38,6 +38,13 @@ class AdminView extends ModelView
         return $this->render_template($this->get_template(), ['objects' => $this->get_model()->get_slides()]);
     }
 
+    protected function run_create() {
+        $form = $this->get_form();
+        if ($_SERVER['REQUEST_METHOD'] === 'GET')
+            $form->populate_fields($_GET);
+        return $this->run_form($form);
+    }
+
     /** Maps a valid form to its database representation */
     protected function process_form_data($data) {
         // Create url from filemanager_image_path
