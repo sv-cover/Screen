@@ -80,7 +80,7 @@ textarea {
     display: inline-block;
     font-size: var(--size);
     line-height: initial;
-    padding-left: calc(var(--switch-width) + .5);
+    padding-left: calc(var(--switch-width) + .5em);
     padding-top: 0.2rem;
     cursor: pointer;
     min-width: var(--switch-width);
