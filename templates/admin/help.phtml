@@ -1,0 +1,91 @@
+<?php $this->extends('../layout.phtml') ?>
+
+<?php $this->begin('content') ?>
+<div class="container-narrow">
+<h1>Help</h1>
+<p>
+    This page describes how to use this software and answers some anticipated questions. If you experience any issues, please contact the <a href="mailto:acdcee@svcover.nl">AC/DCee</a>, or submit an issue in our <a href="https://bitbucket.org/cover-webcie/screen/issues?status=new&status=open" target="_blank" rel="noopener noreferrer nofollow"> issue tracker</a>.
+</p>
+<p>
+    Any changes to slides and their order, settings and visibility will become effective immediately. However, the screen will always finish the current iteration of the slide show according to the previous settings. This means that you may see an old (version of a) slide on the screen within a few minutes of making changes.
+</p>
+<p>
+    The order of the slides can be altered by dragging the <i class="fas fa-arrows-alt" aria-hidden="true"></i> icon.
+</p>
+<p>
+    The rest of this page dives deeper into specific slide settings.
+</p>
+<h2>Slide visibility</h2>
+<p>
+    There are two ways to control the visibility of a slide: start/end date, and the <em>visibility</em> setting. The visibility setting allows you to temporarily hide a slide from the screen without deleting it. Both settings work together as follows:
+</p>
+<ul>
+    <li>A slide with the <em>visibility</em> setting turned <em>off</em>, will never be shown</li>
+    <li>A visible slide (<em>visibility</em> setting turned <em>on</em>), will be shown if today is between the start and end date (if set.)</li>
+    <li>If today is before the start date, or after the end date, the slide will be hidden regardless of visibility.</li>
+</ul>
+<h2>Slide timing</h2>
+<p>
+    The <em>duration</em> setting controls how long the slide is shown for per iteration, with one exception: if the duration exceeds the end time of the slide, the slide will be shown until the end time.
+</p>
+<p>
+    <strong>NB:</strong> it is possible to set an impractically long duration. If you accidentally set a slide to last impractically long, it may seem like you'll never be able to remove that slide from the screen. Don't worry, there's a way out. For slides wit a duration longer than 5 minutes (300 seconds), the screen will check the settings every 5 minutes. If it detects any change to the slides visibility, duration or end time, it will restart the slide show automatically. This way, you can always recover from mistakes.
+</p>
+<p>
+    The <em>Frequency</em> setting determines how often the slide is shown. The default is once every iteration, but it can be set to be shown a lot less often. The iteration during which slides are shown is offset by the slide's position in de slide show. This ensures that infrequent slides will be spread over multiple iterations.
+</p>
+<p>
+    This behaviour can be used to create an alternating pattern. For example, if 3 slides consecutive slides all have their frequency set to once every 3 iterations, they will each be shown in consecutive iterations and never during the same iteration.
+</p>
+<h2>Slide controls</h2>
+<p>
+    In the top-left corner of the slide show, some controls will be displayed. You can hide them manually, by clicking the <i class="fas fa-times" aria-hidden="true"></i>-button, but they will also automatically disappear after 60 seconds. You can always bring them back by shaking your mouse.
+</p>
+<h2>Image slides</h2>
+<p>
+    The slide type <em>image</em> allows you to add an image from <a href="https://filemanager.svcover.nl" target="_blank" rel="noopener noreferrer nofollow">Cover's filemanager</a> as a slide. Besides picking an image, you can control two more parameters: <em>fit</em> and <em>background colour</em>.
+</p>
+<p>
+    The <em>fit</em> parameter dictates how te image will be framed. There are two options: <em>zoom to fit</em> will crop the slide so it fits nicely on the screen, and <em>letterboxed</em> will show the entire image with bars on the sides (or top/bottom.) In most cases, <em>zoom to fit</em> will be the best option. Use <em>letterboxed</em> only if content is cut off from the screen.
+</p>
+<p>
+    The <em>background colour</em> option is mostly self-explanatory. Using this option, you can set the colour of the bars around <em>letterboxed</em> slides. Opaque images (JPEG or PNG/GIF without transparency) set to <em>zoom to fit</em> will not show the background colour, but for transparent images this colour will shine through.
+</p>
+<h2>Web page slides</h2>
+<p>
+    Use the slide type <em>web page</em> to include any web page as a slide. You can pick one of the predefined slides listed below, or any other webpage you think might look great on the screen!
+</p>
+<p>
+    The page is included in a sandbox, so some functionality might be limited. YouTube video's won't play, for example. Also keep in mind that most websites will look rather stupid as a slide: any interactive element will look out of place.
+</p>
+<p>
+    These predefined slides are currently implemented:
+</p>
+<ul>
+    <li>
+        <strong><a href="/slides/calendar" target="_blank" rel="noopener noreferrer nofollow">Calendar</a>:</strong>
+        Upcoming events from the website.
+    </li>
+    <li>
+        <strong><a href="/slides/committees" target="_blank" rel="noopener noreferrer nofollow">Committees</a>:</strong>
+        Highlight a random committee every iteration!
+    </li>
+    <li>
+        <strong><a href="/slides/photos" target="_blank" rel="noopener noreferrer nofollow">Photos</a>:</strong>
+        Display pictures from the 10 most recently added photo albums, chosen randomly each iteration.
+    </li>
+    <li>
+        <strong><a href="/slides/weather" target="_blank" rel="noopener noreferrer nofollow">Weather</a>:</strong>
+        A view outside: current weather and 2 hour rain forecast at Zernike.
+    </li>
+    <li>
+        <strong><a href="/slides/busstop" target="_blank" rel="noopener noreferrer nofollow">Bus Stop</a>:</strong>
+        Upcoming departures from bus stop “Nijenborgh,” right in front of the Bernoulliborg.
+    </li>
+    <li>
+        <strong><a href="/slides/big-text" target="_blank" rel="noopener noreferrer nofollow">BigText</a>:</strong>
+        Create a simple digital poster, with optional countdown!
+    </li>
+</ul>
+</div>
+<?php $this->end() ?>
