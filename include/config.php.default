@@ -13,11 +13,3 @@ define('ALLOWED_IMAGE_EXTENSIONS', ['gif', 'jpg', 'jpeg', 'png', 'svg']);
 
 // TODO: Remove after legacy slides (calendar, committees, photos) have been removed
 define('COVER_WEBSITE_URL', 'https://www.svcover.nl/');
-define('COMMITTEE_PHOTOS_PATH', '/home/webcie/www/website/images/committees/');
-define('COVER_WEBSITE_DB', [
-    'host' => '',
-    'user' => '',
-    'password' => '',
-    'database' => '',
-]);
-
