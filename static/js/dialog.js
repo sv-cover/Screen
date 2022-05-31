@@ -32,7 +32,6 @@ $(document).on('click', 'a[data-popup]', function(e) {
                     <iframe
                         frameborder="0"
                         referrerpolicy="no-referrer"
-                        sandbox="allow-scripts"
                         src="${$link.prop('href')}"
                     ></iframe>
                 </figure>
