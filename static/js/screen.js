@@ -3,7 +3,7 @@ window.DEFAULT_SLIDE_DURATION = 20;
 window.DEFAULT_ERROR_DURATION = 60;
 window.ITERATION_PARAM_NAME = 'cover-screen-iteration';
 window.MIN_SLIDE_DURATION = 1;
-window.RESTART_TIME = '4:00';
+window.RESTART_TIME = '7:00';
 window.SLIDE_PROBE_INTERVAL = 5*60;
 
 
