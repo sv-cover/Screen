@@ -49,7 +49,7 @@ class AdminView extends ModelView
     protected function process_form_data($data) {
         // Create url from filemanager_image_path
         if (!empty($data['filemanager_image_path']))
-            $data['url'] = sprintf('%s/%s', COVER_FILEMANAGER_URL, $data['filemanager_image_path']);
+            $data['url'] = sprintf('%s/images/resize?f=%s&w=%d', COVER_FILEMANAGER_URL, $data['filemanager_image_path'], 1920);
 
         if (array_key_exists('filemanager_image_path', $data))
             unset($data['filemanager_image_path']);
