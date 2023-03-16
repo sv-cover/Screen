@@ -41,8 +41,10 @@ class SlideForm extends Bootstrap3Form
 
         if ($should_patch_url) {
             // Remove base url + /
-            $values['filemanager_image_path'] = substr($values['url'], strlen(COVER_FILEMANAGER_URL) + 1);
-            unset($values['url']);
+            if (preg_match('/\/images\/resize\?f=(?<url>.*)&w=/', $values['url'], $matches)) {
+                $values['filemanager_image_path'] = urldecode($match['url']);
+                unset($values['url'])
+            }
         }
 
         foreach ($values as $field => $value) {
