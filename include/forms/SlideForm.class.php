@@ -91,7 +91,7 @@ class SlideForm extends Bootstrap3Form
             // Only accept image file (using naive extension check)
             $ext = pathinfo(parse_url($this->get_value('filemanager_image_path'), PHP_URL_PATH), PATHINFO_EXTENSION);
             if (!in_array(strtolower($ext), ALLOWED_IMAGE_EXTENSIONS)) {
-                $this->get_field('filemanager_image_path')->errors[] = sprint('Only the following extensions are allowed: %s', join(', ', ALLOWED_IMAGE_EXTENSIONS));
+                $this->get_field('filemanager_image_path')->errors[] = sprintf('Only the following extensions are allowed: %s', join(', ', ALLOWED_IMAGE_EXTENSIONS));
                 $result = false && $result;
             }
         }
