@@ -4,16 +4,16 @@
  */
 
 if (!defined('COVER_API_URL'))
-    define('COVER_API_URL', 'https://www.svcover.nl/api.php');
+    define('COVER_API_URL', 'https://www.svcover.nl/api');
 
 if (!defined('COVER_COOKIE_NAME'))
     define('COVER_COOKIE_NAME', 'cover_session_id');
     
 if (!defined('COVER_LOGIN_URL'))
-    define('COVER_LOGIN_URL', 'https://www.svcover.nl/sessions.php?view=login');
+    define('COVER_LOGIN_URL', 'https://www.svcover.nl/login');
 
 if (!defined('COVER_LOGOUT_URL'))
-    define('COVER_LOGOUT_URL', 'https://www.svcover.nl/sessions.php?view=logout');
+    define('COVER_LOGOUT_URL', 'https://www.svcover.nl/logout');
 
 
 /** Reverse of php's parse_url */
